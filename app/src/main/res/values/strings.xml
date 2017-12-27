@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Tres en Rayas</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_agregar_cliente">Map</string>
+</resources>
