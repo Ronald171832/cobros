@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rldevelopers.cobros.tresenrayas">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!--
@@ -29,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Vistas.Menu"
+            android:name=".Vistas.Menu_Principal"
             android:label="Menú Principal" />
         <activity
             android:name=".Trabajador.Trabajador"

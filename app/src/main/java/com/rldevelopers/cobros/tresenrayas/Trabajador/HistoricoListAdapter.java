@@ -1,4 +1,4 @@
-package com.rldevelopers.cobros.tresenrayas.Cliente;
+package com.rldevelopers.cobros.tresenrayas.Trabajador;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -19,12 +19,12 @@ import java.util.List;
  * Created by Ronald Lopez on 6/21/2017.
  */
 
-public class ClienteListAdapter extends ArrayAdapter<ClienteModel> {
+public class HistoricoListAdapter extends ArrayAdapter<HistoricoModel> {
     private Activity context;
     private int resource;
-    private List<ClienteModel> listImage;
+    private List<HistoricoModel> listImage;
 
-    public ClienteListAdapter(@NonNull Activity context, @LayoutRes int resource, @NonNull List<ClienteModel> objects) {
+    public HistoricoListAdapter(@NonNull Activity context, @LayoutRes int resource, @NonNull List<HistoricoModel> objects) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
@@ -37,15 +37,18 @@ public class ClienteListAdapter extends ArrayAdapter<ClienteModel> {
         LayoutInflater inflater = context.getLayoutInflater();
 
         View v = inflater.inflate(resource, null);
-        TextView tvCodigo = (TextView) v.findViewById(R.id.cardCliente_codigo);
-        TextView tvNombre = (TextView) v.findViewById(R.id.cardCliente_nombre);
-        TextView tvCelular = (TextView) v.findViewById(R.id.cardCliente_celular);
-        tvCodigo.setText(listImage.get(position).getCodigo());
-        tvNombre.setText(listImage.get(position).getNombre());
-        tvCelular.setText(listImage.get(position).getCelular());
-        if (listImage.get(position).getEstado().equals("0")) {
-            tvCodigo.setTextColor(Color.GRAY);
+        TextView tvFecha = (TextView) v.findViewById(R.id.cardTrabajador_informe_historico_fecha);
+        TextView tvEstado = (TextView) v.findViewById(R.id.cardTrabajador_informe_historico_estado);
+        String estado = "";
+        if (listImage.get(position).getEstado().equals("1")) {
+            estado = "En Curso";
+            tvEstado.setText(estado);
+            tvEstado.setTextColor(Color.RED);
+        } else {
+            estado = "Finalizado";
+            tvEstado.setText(estado);
         }
+        tvFecha.setText(listImage.get(position).getFecha());
         return v;
     }
 

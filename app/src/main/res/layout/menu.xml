@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.rldevelopers.cobros.tresenrayas.Vistas.Menu">
+    tools:context="com.rldevelopers.cobros.tresenrayas.Vistas.Menu_Principal">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

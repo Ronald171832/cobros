@@ -1,8 +1,61 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rldevelopers.cobros.tresenrayas.Cliente.MapsActivity" />
+    android:orientation="horizontal"
+    tools:context="com.rldevelopers.cobros.tresenrayas.Cliente.MapsActivity">
+
+    <LinearLayout
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="10dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_rectangular"
+            android:onClick="MAPAterreno"
+            android:text="TERRENO"
+            android:textColor="@color/colorBlanco"
+            android:textSize="11dp" />
+
+        <Button
+            android:layout_width="10dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_rectangular"
+            android:onClick="MAPAhibrido"
+            android:text="HIBRIDO"
+            android:textColor="@color/colorBlanco"
+            android:textSize="12dp" />
+
+        <Button
+            android:layout_width="10dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_rectangular"
+            android:onClick="MAPAnormal"
+            android:text="NORMAL"
+            android:textColor="@color/colorBlanco"
+            android:textSize="11dp" />
+
+        <Button
+            android:layout_width="10dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_rectangular"
+            android:onClick="MAPAsatelite"
+            android:text="SATELITE"
+            android:textColor="@color/colorBlanco"
+            android:textSize="12dp" />
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

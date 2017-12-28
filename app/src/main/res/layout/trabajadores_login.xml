@@ -45,7 +45,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"
                         android:hint="Codigo Usuario"
-                        android:inputType="textCapSentences"
+                        android:inputType="number"
                         android:textSize="20dp" />
                 </android.support.design.widget.TextInputLayout>
 

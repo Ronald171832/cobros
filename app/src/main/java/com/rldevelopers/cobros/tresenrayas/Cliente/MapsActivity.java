@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -182,7 +183,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             queue.add(stringRequest);
 
 
-        }else if(TIPO.equals("3")){//INDIVIDUAL
+        }else if(TIPO.equals("3")){//INDIVIDUAL CLIENTE
             double latitud =Double.parseDouble( getIntent().getStringExtra("la"));
             double longitud = Double.parseDouble( getIntent().getStringExtra("lo"));
             String nombre = getIntent().getStringExtra("no");
@@ -196,9 +197,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(estado).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
             }
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,17));
+        }else if(TIPO.equals("4")) {//INDIVIDUAL TRABAJADOR
+            double latitud = Double.parseDouble(getIntent().getStringExtra("la"));
+            double longitud = Double.parseDouble(getIntent().getStringExtra("lo"));
+            String nombre = getIntent().getStringExtra("no");
+            String estado = getIntent().getStringExtra("es");
+            LatLng sydney = new LatLng(latitud, longitud);
+            if (estado.equals("1")) {
+                estado = "HABILITADO";
+                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(estado).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            } else {
+                estado = "DE BAJA";
+                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(estado).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            }
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17));
         }
 
+    }
 
+    public void MAPAsatelite(View view) {
+        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+    }
+
+    public void MAPAterreno(View view) {
+        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+    }
+
+    public void MAPAhibrido(View view) {
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+    }
+
+    public void MAPAnormal(View view) {
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
     private void addMyLocation(boolean b) {

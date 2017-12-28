@@ -349,7 +349,7 @@ public class Cuenta extends AppCompatActivity {
                     for (int i = 0; i < n; i++) {
                         calendario.add("");
                     }
-                  //  mAdapter.notifyDataSetChanged();
+                    //  mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -448,7 +448,7 @@ public class Cuenta extends AppCompatActivity {
                         startActivity(new Intent(Cuenta.this, Cliente.class));
                         Toast.makeText(Cuenta.this, "Credito agregado Satisfactoriamente", Toast.LENGTH_LONG).show();
                     } else if (respuesta == 0) {
-                        Toast.makeText(Cuenta.this, "No tienes Dinero para prestar!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Cuenta.this, "No tienes Dinero Suficiente para prestar!", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
