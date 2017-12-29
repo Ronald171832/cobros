@@ -6,7 +6,7 @@ package com.rldevelopers.cobros.tresenrayas.RUTAS;
 
 public class Rutas {
 
-    public final static String IP = "http://192.168.0.104";
+    public final static String IP = "http://192.168.0.41";
     public final static String PUERTO = ":8080";
     public final static String CARPETA = "/cobros/public/";
 
@@ -17,10 +17,23 @@ public class Rutas {
 
     public final static String LOGIN = IP + PUERTO + CARPETA + "iniciar/";
     public final static String ABONAR_TRABAJADOR = IP + PUERTO + CARPETA + "movimiento/abono/";
-
+    public final static String EDITAR_TRABAJADOR = IP + PUERTO + CARPETA + "trabajador/actualizar/";
+    public final static String DAR_BAJA_ALTA = IP + PUERTO + CARPETA + "trabajador/baja/";
+    public final static String SU_HISTORICO_GENERAL = IP + PUERTO + CARPETA + "informes/verHistorico";
+    public final static String SU_INFORME_ESPECIFICO = IP + PUERTO + CARPETA + "informes/ver/";
+    public final static String SU_INFORME_ULTIMO = IP + PUERTO + CARPETA + "informes/verUltimo";
+    public final static String SU_INFORME_INGRESOS = IP + PUERTO + CARPETA + "informes/verIngresos/";
+    public final static String SU_INFORME_EGRESOS = IP + PUERTO + CARPETA + "informes/verEgresos/";
+    public final static String SU_INFORME_GASTOS = IP + PUERTO + CARPETA + "informes/verGastos/";
+    public final static String ABRIR_CAJA = IP + PUERTO + CARPETA + "abrirInforme";
+    public final static String CERRAR_CAJA = IP + PUERTO + CARPETA + "cerrarInforme";
+    public final static String UBICACION_TRABAJADOR = IP + PUERTO + CARPETA + "trabajador/ubicacion/";
+    public final static String SU_EDITAR_CONTRA = IP + PUERTO + CARPETA + "su/password/";
+    public final static String SU_CLIENTES = IP + PUERTO + CARPETA + "clientes/mostrarTodos";
 
 
     public final static String LOGIN_TRABAJADOR = IP + PUERTO + CARPETA + "iniciarTrabajador/";
+    public final static String TRA_EDITAR_CONTRA = IP + PUERTO + CARPETA + "trabajador/password/";
     public final static String LISTA_TRABAJADORES = IP + PUERTO + CARPETA + "trabajadores/mostrar";
     public final static String AGREGAR_TRABAJADOR = IP + PUERTO + CARPETA + "agregarTrabajador/";
     public final static String ID_TRABAJADOR = IP + PUERTO + CARPETA + "nuevoTrabajador";
@@ -31,7 +44,6 @@ public class Rutas {
     public final static String INFORME_GASTOS = IP + PUERTO + CARPETA + "balance/verGastos/";
     public final static String INFORME_HISTORICO = IP + PUERTO + CARPETA + "balance/verHistorico/";
     public final static String INFORME_HISTORICO_ESPECIFICO = IP + PUERTO + CARPETA + "balance/ver/";
-
 
 
     public final static String LISTA_CLIENTES_TODOS = IP + PUERTO + CARPETA + "clientes/mostrar/todos/";

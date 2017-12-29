@@ -52,29 +52,45 @@
 
                     <TextView
                         android:id="@+id/cardTrabajador_informe_monto"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:layout_weight="1"
                         android:gravity="left"
                         android:paddingLeft="5dp"
                         android:text="00 Bs"
                         android:textColor="@color/colorNegro"
-                        android:textSize="28dp"
+                        android:textSize="30dp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/cardTrabajador_informe_fecha"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginRight="7dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="right"
-                        android:paddingLeft="5dp"
-                        android:text="Fecha"
-                        android:textColor="@color/colorNegro"
-                        android:textSize="14dp" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/cardTrabajador_informe_nombreTrabajdor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginRight="7dp"
+                            android:gravity="right"
+                            android:text="Nombre"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorNegro"
+                            android:textSize="14dp" />
+                        <TextView
+                            android:id="@+id/cardTrabajador_informe_fecha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginRight="7dp"
+                            android:gravity="right"
+                            android:text="Fecha"
+                            android:textColor="@color/colorNegro"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
 

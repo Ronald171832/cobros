@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,18 +38,21 @@ public class HistoricoListAdapter extends ArrayAdapter<HistoricoModel> {
         LayoutInflater inflater = context.getLayoutInflater();
 
         View v = inflater.inflate(resource, null);
-        TextView tvFecha = (TextView) v.findViewById(R.id.cardTrabajador_informe_historico_fecha);
+        TextView tvFechaIni = (TextView) v.findViewById(R.id.cardTrabajador_informe_historico_fecha_ini);
+        TextView tvFechaFin = (TextView) v.findViewById(R.id.cardTrabajador_informe_historico_fecha_fin);
         TextView tvEstado = (TextView) v.findViewById(R.id.cardTrabajador_informe_historico_estado);
         String estado = "";
         if (listImage.get(position).getEstado().equals("1")) {
             estado = "En Curso";
+            tvFechaFin.setText(Html.fromHtml("<b>Fecha Ciere: </b>" + " Sin Fecha"));
             tvEstado.setText(estado);
             tvEstado.setTextColor(Color.RED);
         } else {
             estado = "Finalizado";
             tvEstado.setText(estado);
+            tvFechaFin.setText(Html.fromHtml("<b>Fecha Ciere: </b>" + listImage.get(position).getFechaFin()));
         }
-        tvFecha.setText(listImage.get(position).getFecha());
+        tvFechaIni.setText(Html.fromHtml("<b>Fecha Inicio: </b>" + listImage.get(position).getFecha()));
         return v;
     }
 

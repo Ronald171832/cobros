@@ -88,12 +88,9 @@ public class Cliente extends AppCompatActivity {
 
 
     private void tocarListView() {
-
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, View view, final int pos, long l) {
-
                 final ArrayList<String> listItems = new ArrayList<>();
                 listItems.add("Ver Cuentas");
                 listItems.add("No Pago!");
@@ -301,7 +298,7 @@ public class Cliente extends AppCompatActivity {
 
     private void editarDatos(final int pos) {
         final Dialog editarDatosCliente = new Dialog(Cliente.this);
-        editarDatosCliente.setTitle("Agregar Credito");
+        editarDatosCliente.setTitle("Editar Datos");
         editarDatosCliente.setContentView(R.layout.cliente_editar);
         final EditText nombre = (EditText) editarDatosCliente.findViewById(R.id.et_cliente_editar_nombre);
         final EditText celular = (EditText) editarDatosCliente.findViewById(R.id.et_cliente_editar_celular);

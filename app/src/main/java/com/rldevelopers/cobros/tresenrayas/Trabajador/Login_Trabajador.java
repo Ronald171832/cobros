@@ -36,7 +36,6 @@ public class Login_Trabajador extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("colombianos", MODE_PRIVATE);
         boolean ingresar = sharedPreferences.getBoolean("trabajador", false);
         if (ingresar) {
-
             startActivity(new Intent(Login_Trabajador.this, Menu_Trabajador.class));
         }
         nombre = (EditText) findViewById(R.id.et_trabajador_login_name);
@@ -69,6 +68,7 @@ public class Login_Trabajador extends AppCompatActivity {
                         startActivity(intent);
                         pDialog.dismiss();
                     } else if(respuesta==2){
+                        pDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Verifique su contraseña", Toast.LENGTH_SHORT).show();
                     } else{
                         Toast.makeText(getApplicationContext(), "Verificar Datos!", Toast.LENGTH_SHORT).show();
@@ -91,5 +91,10 @@ public class Login_Trabajador extends AppCompatActivity {
             }
         });
         queue.add(stringRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //
     }
 }

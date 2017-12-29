@@ -13,6 +13,13 @@ public class ClienteModel {
     public String longitud;
     public String estado;
 
+    public ClienteModel(String codigo, String nombre, String celular, String estado) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.celular = celular;
+        this.estado = estado;
+    }
+
     public ClienteModel() {
     }
 

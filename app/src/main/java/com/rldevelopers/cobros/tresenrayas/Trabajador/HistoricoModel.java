@@ -7,15 +7,24 @@ package com.rldevelopers.cobros.tresenrayas.Trabajador;
 public class HistoricoModel {
 
     public String fecha;
+    public String fechaFin;
     public String estado;
+    public String codigo;
 
-    public HistoricoModel(String fecha, String estado, String codigo) {
+    public HistoricoModel(String fecha, String fechaFin, String estado, String codigo) {
         this.fecha = fecha;
+        this.fechaFin = fechaFin;
         this.estado = estado;
         this.codigo = codigo;
     }
 
-    public String codigo;
+    public String getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
+    }
 
     public HistoricoModel() {
     }

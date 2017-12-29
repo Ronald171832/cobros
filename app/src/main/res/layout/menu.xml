@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.rldevelopers.cobros.tresenrayas.Vistas.Menu_Principal">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,17 +20,17 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="vertical"
-                android:onClick="trabajador"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="trabajador"
+                android:orientation="vertical"
                 android:padding="20dp">
 
                 <ImageView
-                    android:layout_gravity="center"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_gravity="center"
                     android:background="@drawable/clientes" />
 
             </LinearLayout>
@@ -52,16 +53,17 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="vertical"
+                android:onClick="verClientes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:orientation="vertical"
                 android:padding="20dp">
 
                 <ImageView
-                    android:layout_gravity="center"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_gravity="center"
                     android:background="@drawable/trabajadores" />
 
             </LinearLayout>
@@ -77,6 +79,7 @@
                 android:textSize="15dp" />
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -84,22 +87,23 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:onClick="informeGeneral"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:orientation="vertical"
                 android:padding="20dp">
 
                 <ImageView
-                    android:layout_gravity="center"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_gravity="center"
                     android:background="@drawable/informe" />
 
             </LinearLayout>
@@ -122,59 +126,21 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:onClick="cerrarSesion"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="20dp">
-
-                <ImageView
-                    android:layout_gravity="center"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/exit" />
-
-            </LinearLayout>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/boton_rectangular"
-                android:gravity="center"
-                android:text="Cerrar Sesión"
-                android:textColor="@color/colorBlanco"
-                android:textSize="15dp" />
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <LinearLayout
                 android:onClick="iniciarSesionTrabajador"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:padding="20dp">
 
                 <ImageView
-                    android:layout_gravity="center"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_gravity="center"
                     android:background="@drawable/user" />
 
             </LinearLayout>
+
 
             <Button
                 android:layout_width="match_parent"
@@ -183,37 +149,6 @@
                 android:background="@drawable/boton_rectangular"
                 android:gravity="center"
                 android:text="Login Trabajdor"
-                android:textColor="@color/colorBlanco"
-                android:textSize="15dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="invisible"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="40dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/exit" />
-
-            </LinearLayout>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/boton_rectangular"
-                android:gravity="center"
-                android:text="Cerrar Sesión"
                 android:textColor="@color/colorBlanco"
                 android:textSize="15dp" />
         </LinearLayout>

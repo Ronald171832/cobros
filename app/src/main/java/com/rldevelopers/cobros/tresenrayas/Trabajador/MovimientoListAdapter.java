@@ -40,6 +40,7 @@ public class MovimientoListAdapter extends ArrayAdapter<MovimientoModel> {
 
         View v = inflater.inflate(resource, null);
         TextView tvFecha = (TextView) v.findViewById(R.id.cardTrabajador_informe_fecha);
+        TextView tvNombre = (TextView) v.findViewById(R.id.cardTrabajador_informe_nombreTrabajdor);
         TextView tvMonto = (TextView) v.findViewById(R.id.cardTrabajador_informe_monto);
         TextView tvDetalle = (TextView) v.findViewById(R.id.cardTrabajador_informe_detalle);
         TextView tvDescripcion = (TextView) v.findViewById(R.id.cardTrabajador_informe_descripcion);
@@ -54,7 +55,9 @@ public class MovimientoListAdapter extends ArrayAdapter<MovimientoModel> {
             tvIndicador.setText("▼");
             tvIndicador.setTextColor(Color.RED);
         }
+
         tvFecha.setText(listImage.get(position).getFecha());
+        tvNombre.setText(listImage.get(position).getNombreTrabajador());
         tvMonto.setText(listImage.get(position).getMonto());
         tvDetalle.setText(listImage.get(position).getDetalle());
         tvDescripcion.setText(listImage.get(position).getDescripcion());

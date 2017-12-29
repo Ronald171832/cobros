@@ -34,8 +34,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/cardTrabajador_informe_historico_fecha"
-
+                        android:id="@+id/cardTrabajador_informe_historico_fecha_ini"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -44,8 +43,19 @@
                         android:paddingLeft="5dp"
                         android:text="Fecha"
                         android:textColor="@color/colorNegro"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/cardTrabajador_informe_historico_fecha_fin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingLeft="5dp"
+                        android:text="Fecha"
+                        android:textColor="@color/colorNegro"
+                        android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/cardTrabajador_informe_historico_estado"

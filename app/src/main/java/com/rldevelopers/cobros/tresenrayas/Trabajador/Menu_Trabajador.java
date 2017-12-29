@@ -1,19 +1,31 @@
 package com.rldevelopers.cobros.tresenrayas.Trabajador;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +58,183 @@ public class Menu_Trabajador extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trabajador_menu);
         sharedPreferences = getSharedPreferences("colombianos", MODE_PRIVATE);
+        verificarPermiso();
+        mostrarCerrarLogin();
+    }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_editar_contra_tra, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_editar_contra_tra:
+                editarContra();
+                break;
+        }
+        return true;
+    }
+
+    private void editarContra() {
+        final Dialog registrar_gasto = new Dialog(Menu_Trabajador.this);
+        registrar_gasto.setTitle("Editar Contra");
+        registrar_gasto.setContentView(R.layout.editar_contra);
+        final EditText monto = (EditText) registrar_gasto.findViewById(R.id.et_editar_contra_anterior);
+        final EditText descripcion = (EditText) registrar_gasto.findViewById(R.id.et_editar_contra_actual);
+        Button boton = (Button) registrar_gasto.findViewById(R.id.bt_editar_contra);
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String mo = monto.getText().toString().trim();
+                String de = descripcion.getText().toString().trim();
+                if (mo.isEmpty()) {
+                    monto.setError("Debe llenar este campo...");
+                    monto.requestFocus();
+                    return;
+                } else if (de.isEmpty()) {
+                    descripcion.setError("Debe llenar este campo...");
+                    descripcion.requestFocus();
+                    return;
+                }
+                String cod_tra = sharedPreferences.getString("codigo_trabajador", "");
+                String URL = Rutas.TRA_EDITAR_CONTRA + mo + "/" + de + "/" + cod_tra;
+                RequestQueue queue = Volley.newRequestQueue(Menu_Trabajador.this);
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject root = new JSONObject(response);
+                            int respuesta = (int) root.get("confirmacion");
+                            if (respuesta == 1) {
+                                Toast.makeText(Menu_Trabajador.this, "Contraseña actualizada Satisfactoriamente", Toast.LENGTH_LONG).show();
+                                registrar_gasto.cancel();
+                            } else if (respuesta == 0) {
+                                Toast.makeText(Menu_Trabajador.this, "Contraseña Anterior Incorrecta", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                queue.add(stringRequest);
+            }
+        });
+        int width = (int) (Menu_Trabajador.this.getResources().getDisplayMetrics().widthPixels);
+        int height = (int) (Menu_Trabajador.this.getResources().getDisplayMetrics().heightPixels * 0.9);
+        registrar_gasto.getWindow().setLayout(width, height);
+        registrar_gasto.show();
+    }
+
+
+    private void mostrarCerrarLogin() {
+        boolean ingresar = sharedPreferences.getBoolean("superUsuario", false);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.ll_cerrarSesion);
+        if (ingresar) {
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
+    public void verificarPermiso() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            obtenerUbicacionActual();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            obtenerUbicacionActual();
+        }
+    }
+
+    private void obtenerUbicacionActual() {
+        try {
+            LocationManager locationManager = (LocationManager)
+                    getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            Location location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+            double latitude = location.getLatitude();
+            double longitud = location.getLongitude();
+            //   Toast.makeText(Menu_Trabajador.this, latitude + "\n" + latitude + " ", Toast.LENGTH_LONG).show();
+            String cod_tra = sharedPreferences.getString("codigo_trabajador", "");
+            String URL = Rutas.UBICACION_TRABAJADOR + latitude + "/" + longitud + "/" + cod_tra;
+            RequestQueue queue = Volley.newRequestQueue(this);
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONObject root = new JSONObject(response);
+                        //int respuesta = (int) root.get("confirmacion");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        //Toast.makeText(getApplicationContext(), "El usuario no existe en la base de datos", Toast.LENGTH_LONG).show();
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Problemas de conexion verifique su Internet", Toast.LENGTH_LONG).show();
+                }
+            });
+            queue.add(stringRequest);
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
+                if (permissions.length == 1 &&
+                        permissions[0] == android.Manifest.permission.ACCESS_FINE_LOCATION &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permiso aceptado!", Toast.LENGTH_LONG).show();
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                } else {
+                    obtenerUbicacionActual();
+                    Toast.makeText(getBaseContext(), "Permiso realizado", Toast.LENGTH_LONG).show();
+                }
+                break;
+
+        }
     }
 
     public void clienteTrabajador(View view) {
@@ -133,8 +321,9 @@ public class Menu_Trabajador extends AppCompatActivity {
                         try {
                             String codigo = (int) jsonArray.getJSONObject(i).get("id") + "";
                             String fecha = (String) jsonArray.getJSONObject(i).get("fecha");
+                            String fechaFin = (String) jsonArray.getJSONObject(i).get("fecha_cierre");
                             String estado = (int) jsonArray.getJSONObject(i).get("estado") + "";
-                            historicoModel = new HistoricoModel(fecha, estado, codigo);
+                            historicoModel = new HistoricoModel(fecha, fechaFin, estado, codigo);
                         } catch (JSONException e) {
                             Log.e("Parser JSON", e.toString());
                         }
@@ -186,6 +375,8 @@ public class Menu_Trabajador extends AppCompatActivity {
         final Dialog verInforme = new Dialog(Menu_Trabajador.this);
         verInforme.setTitle("Informe General");
         verInforme.setContentView(R.layout.trabajador_informe);
+        final TextView fechaFin = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_fecha_Fin);
+
         final TextView fecha = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_fecha);
         final TextView saldo = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_saldo);
         final TextView ingreso = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_ingreso);
@@ -207,7 +398,13 @@ public class Menu_Trabajador extends AppCompatActivity {
                 try {
                     JSONObject root = new JSONObject(response);
                     CODIGO_INFORME = (String) root.get("codigo");
-                    fecha.setText(Html.fromHtml("<b>Fecha: </b>" + (String) root.get("fecha")));
+                    String estado = (String) root.get("estado");
+                    if (estado.equals("1")) {
+                        fechaFin.setText(Html.fromHtml("<b>Fecha Cierre: </b>" + "Sin Fecha"));
+                    } else {
+                        fechaFin.setText(Html.fromHtml("<b>Fecha Cierre: </b>" + (String) root.get("fecha_cierre")));
+                    }
+                    fecha.setText(Html.fromHtml("<b>Fecha Inicio: </b>" + (String) root.get("fecha")));
                     egreso.setText(Html.fromHtml("<b>Egreso: </b>" + (String) root.get("egresos") + " Bs."));
                     ingreso.setText(Html.fromHtml("<b>Ingreso: </b>" + (String) root.get("ingresos") + " Bs."));
                     saldo.setText((String) root.get("saldo") + " Bs.");
@@ -281,7 +478,8 @@ public class Menu_Trabajador extends AppCompatActivity {
                             String monto = (int) jsonArray.getJSONObject(i).get("monto") + " Bs.";
                             String detalle = (String) jsonArray.getJSONObject(i).get("detalle");
                             String descripcion = (String) jsonArray.getJSONObject(i).get("descripcion");
-                            movimientoModel = new MovimientoModel(fecha, monto, detalle, descripcion);
+                            String nombre = (String) jsonArray.getJSONObject(i).get("nombre");
+                            movimientoModel = new MovimientoModel(fecha, monto, detalle, descripcion, nombre);
                         } catch (JSONException e) {
                             Log.e("Parser JSON", e.toString());
                         }

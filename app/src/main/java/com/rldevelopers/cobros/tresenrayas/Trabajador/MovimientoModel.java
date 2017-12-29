@@ -10,6 +10,23 @@ public class MovimientoModel {
     public String monto;
     public String detalle;
     public String descripcion;
+    public String nombreTrabajador;
+
+    public String getNombreTrabajador() {
+        return nombreTrabajador;
+    }
+
+    public void setNombreTrabajador(String nombreTrabajador) {
+        this.nombreTrabajador = nombreTrabajador;
+    }
+
+    public MovimientoModel(String fecha, String monto, String detalle, String descripcion, String nombreTrabajador) {
+        this.fecha = fecha;
+        this.monto = monto;
+        this.detalle = detalle;
+        this.descripcion = descripcion;
+        this.nombreTrabajador = nombreTrabajador;
+    }
 
     public MovimientoModel() {
     }
@@ -46,10 +63,5 @@ public class MovimientoModel {
         this.descripcion = descripcion;
     }
 
-    public MovimientoModel(String fecha, String monto, String detalle, String descripcion) {
-        this.fecha = fecha;
-        this.monto = monto;
-        this.detalle = detalle;
-        this.descripcion = descripcion;
-    }
+
 }

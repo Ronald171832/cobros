@@ -36,9 +36,9 @@ public class Login extends AppCompatActivity {
     private void init() {
         sharedPreferences = getSharedPreferences("colombianos", MODE_PRIVATE);
         boolean ingresar = sharedPreferences.getBoolean("superUsuario", false);
-        if (ingresar) {
+        /*if (ingresar) {
             startActivity(new Intent(Login.this, Menu_Principal.class));
-        }
+        }*/
         nombre = (EditText) findViewById(R.id.et_login_name);
         contra = (EditText) findViewById(R.id.et_login_contra);
     }
@@ -63,7 +63,8 @@ public class Login extends AppCompatActivity {
                     int respuesta = (int) root.get("respuesta");
                     if (respuesta == 1) {
                         sharedPreferences.edit().putBoolean("superUsuario", true).apply();
-                        Toast.makeText(getApplicationContext(), "Bienvenido " + nombre.getText().toString(), Toast.LENGTH_SHORT).show();
+                        sharedPreferences.edit().putString("superUsuarioNombre", nombre.getText().toString().trim()).apply();
+                        Toast.makeText(getApplicationContext(), "Bienvenido " + nombre.getText().toString().trim(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Login.this, Menu_Principal.class);
                         startActivity(intent);
                         pDialog.dismiss();

@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.rldevelopers.jps.togetherforever.Chat.Chat">
+    <item
+        android:id="@+id/item_editar_contra_su"
+        android:icon="@drawable/key"
+        android:title="MAPA"
+        app:showAsAction="ifRoom"
+        android:visible="true"
+        android:enabled="true"
+        android:checkable="true" />
+</menu>

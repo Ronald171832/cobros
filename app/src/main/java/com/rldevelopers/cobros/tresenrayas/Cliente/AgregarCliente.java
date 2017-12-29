@@ -78,7 +78,7 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
 
         String la = ubicacion.latitude + "";
         String lo = ubicacion.longitude + "";
-        String URL =Rutas.AGREGAR_CLIENTE + nombre.getText().toString().trim() +
+        String URL = Rutas.AGREGAR_CLIENTE + nombre.getText().toString().trim() +
                 "/" + celular.getText().toString().trim() + "/" + la + "/" + lo;
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
@@ -117,7 +117,7 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
             celular.requestFocus();
             return false;
         }
-        if(ubicacion==null){
+        if (ubicacion == null) {
             Toast.makeText(AgregarCliente.this, "Tocar el mapa Por favor!", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -197,7 +197,7 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
                     }
                     mMap.setMyLocationEnabled(true);
                 } else {
-                    Toast.makeText(getBaseContext(), "Permiso denegado...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Permiso realizado...", Toast.LENGTH_LONG).show();
                 }
                 break;
         }

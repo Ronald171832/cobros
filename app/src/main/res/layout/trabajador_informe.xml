@@ -45,9 +45,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
+                    android:layout_weight="1"
                     android:text="Fecha:"
                     android:textColor="@color/colorNegro"
-                    android:textSize="18dp" />
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/tv_informe_trabajador_fecha_Fin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_weight="1"
+                    android:text="Fecha:"
+                    android:textColor="@color/colorNegro"
+                    android:textSize="14dp" />
 
             </LinearLayout>
 
