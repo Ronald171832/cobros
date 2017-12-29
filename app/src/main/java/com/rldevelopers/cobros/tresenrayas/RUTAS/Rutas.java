@@ -6,14 +6,13 @@ package com.rldevelopers.cobros.tresenrayas.RUTAS;
 
 public class Rutas {
 
-    public final static String IP = "http://192.168.0.41";
+   /* public final static String IP = "http://192.168.0.41";
     public final static String PUERTO = ":8080";
-    public final static String CARPETA = "/cobros/public/";
+    public final static String CARPETA = "/cobros/public/";*/
 
-    /*public final static String IP = "http://manueldeveloper.xyz";
+    public final static String IP = "http://manueldeveloper.xyz";
     public final static String PUERTO = "";
-    public final static String CARPETA = "/r/cobros01/public/";
-*/
+    public final static String CARPETA = "/r/cobros1/public/";
 
     public final static String LOGIN = IP + PUERTO + CARPETA + "iniciar/";
     public final static String ABONAR_TRABAJADOR = IP + PUERTO + CARPETA + "movimiento/abono/";
