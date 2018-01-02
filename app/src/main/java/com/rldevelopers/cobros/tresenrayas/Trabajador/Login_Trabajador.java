@@ -17,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.rldevelopers.cobros.tresenrayas.R;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.Rutas;
+import com.rldevelopers.cobros.tresenrayas.Vistas.Menu_Principal;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,12 +33,13 @@ public class Login_Trabajador extends AppCompatActivity {
         setContentView(R.layout.trabajadores_login);
         init();
     }
+
     private void init() {
         sharedPreferences = getSharedPreferences("colombianos", MODE_PRIVATE);
         boolean ingresar = sharedPreferences.getBoolean("trabajador", false);
-        if (ingresar) {
+       /* if (ingresar) {
             startActivity(new Intent(Login_Trabajador.this, Menu_Trabajador.class));
-        }
+        }*/
         nombre = (EditText) findViewById(R.id.et_trabajador_login_name);
         contra = (EditText) findViewById(R.id.et_trabajador_login_contra);
     }
@@ -67,10 +69,10 @@ public class Login_Trabajador extends AppCompatActivity {
                         Intent intent = new Intent(Login_Trabajador.this, Menu_Trabajador.class);
                         startActivity(intent);
                         pDialog.dismiss();
-                    } else if(respuesta==2){
+                    } else if (respuesta == 2) {
                         pDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Verifique su contraseña", Toast.LENGTH_SHORT).show();
-                    } else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "Verificar Datos!", Toast.LENGTH_SHORT).show();
                         pDialog.dismiss();
                     }
@@ -95,6 +97,22 @@ public class Login_Trabajador extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //
+        //TRABAJADOR
+     /*   AlertDialog.Builder cliente = new AlertDialog.Builder(Login_Trabajador.this);
+        cliente.setTitle("Salir");
+        cliente.setMessage("Elija una opcion:");
+        cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity();
+            }
+        });
+        cliente.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+//
+            }
+        });
+        cliente.show();*/
+        //SUPER USUARIO
+         startActivity(new Intent(this, Menu_Principal.class));
     }
 }

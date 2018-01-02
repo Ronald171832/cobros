@@ -71,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String URL = "";
         String cod_tra = sharedPreferences.getString("codigo_trabajador", "");
         if (TIPO.equals("1")) {//TODOS LOS CLIENTES
-            URL =  Rutas.LISTA_CLIENTES_TODOS + cod_tra;
+            URL = Rutas.LISTA_CLIENTES_TODOS + cod_tra;
             RequestQueue queue = Volley.newRequestQueue(MapsActivity.this);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                 @Override
@@ -94,14 +94,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     estado = "Sin Prestamo";
                                     mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(estado + "").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
                                 }
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,15));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
 
                             } catch (JSONException e) {
                                 Log.e("Parser JSON", e.toString());
                                 System.out.println("------------------------------------------------------------------------------------------------------");
                             }
                         }
-                         jsonArray = root.getJSONArray("clientesSin");
+                        jsonArray = root.getJSONArray("clientesSin");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             try {
                                 String nombre = (String) jsonArray.getJSONObject(i).get("nombre");
@@ -117,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     estado = "Sin Prestamo";
                                     mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(estado + "").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
                                 }
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,15));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
 
                             } catch (JSONException e) {
                                 Log.e("Parser JSON", e.toString());
@@ -139,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         } else if (TIPO.equals("2")) {//CLIENTES PENDIENTES
-            URL =  Rutas.LISTA_CLIENTES_PENDIENTES + cod_tra;
+            URL = Rutas.LISTA_CLIENTES_PENDIENTES + cod_tra;
             RequestQueue queue = Volley.newRequestQueue(MapsActivity.this);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                 @Override
@@ -162,7 +162,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     estado = "Sin Prestamo";
                                     mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(estado + "").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
                                 }
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,15));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
                             } catch (JSONException e) {
                                 Log.e("Parser JSON", e.toString());
                                 System.out.println("------------------------------------------------------------------------------------------------------");
@@ -183,21 +183,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             queue.add(stringRequest);
 
 
-        }else if(TIPO.equals("3")){//INDIVIDUAL CLIENTE
-            double latitud =Double.parseDouble( getIntent().getStringExtra("la"));
-            double longitud = Double.parseDouble( getIntent().getStringExtra("lo"));
+        } else if (TIPO.equals("3")) {//INDIVIDUAL CLIENTE
+            double latitud = Double.parseDouble(getIntent().getStringExtra("la"));
+            double longitud = Double.parseDouble(getIntent().getStringExtra("lo"));
             String nombre = getIntent().getStringExtra("no");
             String estado = getIntent().getStringExtra("es");
             LatLng sydney = new LatLng(latitud, longitud);
-           if (estado.equals("1")) {
+            if (estado.equals("1")) {
                 estado = "Con Prestamo";
                 mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(estado).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             } else {
                 estado = "Sin Prestamo";
                 mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(estado).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
             }
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,17));
-        }else if(TIPO.equals("4")) {//INDIVIDUAL TRABAJADOR
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17));
+        } else if (TIPO.equals("4")) {//INDIVIDUAL TRABAJADOR
             double latitud = Double.parseDouble(getIntent().getStringExtra("la"));
             double longitud = Double.parseDouble(getIntent().getStringExtra("lo"));
             String nombre = getIntent().getStringExtra("no");
@@ -211,7 +211,105 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(estado).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
             }
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17));
+        } else if (TIPO.equals("5")) {//TODOS LOS CLIENTES PENDIENTES CATEGORIZADOS POR TRABAJADOR
+
+
+            URL = Rutas.SU_CLIENTES_MAPA;
+            RequestQueue queue = Volley.newRequestQueue(MapsActivity.this);
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        String trabajador = "", t = "";
+                        int j = 0;
+                        int i = 0;
+                        boolean bandera=true;
+                        JSONObject root = new JSONObject(response);
+                        JSONArray jsonArray = root.getJSONArray("clientes");
+                        trabajador = (String) jsonArray.getJSONObject(i).get("trabajador");
+                        while (i < jsonArray.length()){
+                            t=trabajador;
+                            while (i < jsonArray.length()&&bandera) {
+                                trabajador = (String) jsonArray.getJSONObject(i).get("trabajador");
+                                if(t.equals(trabajador)){
+                                    bandera=true;
+                                    try {
+                                        String nombre = (String) jsonArray.getJSONObject(i).get("nombre");
+                                        double latitud = Double.parseDouble((String) jsonArray.getJSONObject(i).get("latitud"));
+                                        double longitud = Double.parseDouble((String) jsonArray.getJSONObject(i).get("longitud"));
+                                        trabajador = (String) jsonArray.getJSONObject(i).get("trabajador");
+                                        LatLng sydney = new LatLng(latitud, longitud);
+                                        switch (j) {
+                                            case 0:
+                                            case 10:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                                                break;
+                                            case 1:
+                                            case 11:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                                                break;
+                                            case 2:
+                                            case 12:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                                break;
+                                            case 3:
+                                            case 13:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                                                break;
+                                            case 4:
+                                            case 14:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                                break;
+                                            case 5:
+                                            case 15:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                                                break;
+                                            case 6:
+                                            case 16:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                                                break;
+                                            case 7:
+                                            case 17:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                                                break;
+                                            case 8:
+                                            case 18:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                                                break;
+                                            case 9:
+                                            case 19:
+                                                mMap.addMarker(new MarkerOptions().position(sydney).title(nombre).snippet(trabajador).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                                                break;
+                                        }
+                                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
+                                    } catch (JSONException e) {
+                                        Log.e("Parser JSON", e.toString());
+                                        System.out.println("------------------------------------------------------------------------------------------------------");
+                                    }
+                                    i++;
+                                }else{
+                                    bandera=false;
+                                }
+                            }
+                            j++;
+                            bandera=true;
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+            queue.add(stringRequest);
+
         }
+
 
     }
 

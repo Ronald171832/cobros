@@ -14,34 +14,36 @@ import com.rldevelopers.cobros.tresenrayas.R;
 public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListener {
 
 
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9;
+    Button b1, b2, b3, b4, b5, b6, b7, b8, b9;
     private int juego[][];
     private boolean sw;
     private int c;
     TextView jLabel2;
 
     int i;
-    public void ingresarOculto(View view){
+
+    public void ingresarOculto(View view) {
         i++;
-        if(i==5){
-            startActivity(new Intent(this,Login.class));
-            //startActivity(new Intent(this,Login_Trabajador.class));
+        if (i == 5) {
+            startActivity(new Intent(this, Login.class));
+          //  startActivity(new Intent(this,Login_Trabajador.class));
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.juego);
-        i=0;
-        b1=(Button)findViewById(R.id.b1);
-        b2=(Button)findViewById(R.id.b2);
-        b3=(Button)findViewById(R.id.b3);
-        b4=(Button)findViewById(R.id.b4);
-        b5=(Button)findViewById(R.id.b5);
-        b6=(Button)findViewById(R.id.b6);
-        b7=(Button)findViewById(R.id.b7);
-        b8=(Button)findViewById(R.id.b8);
-        b9=(Button)findViewById(R.id.b9);
+        i = 0;
+        b1 = (Button) findViewById(R.id.b1);
+        b2 = (Button) findViewById(R.id.b2);
+        b3 = (Button) findViewById(R.id.b3);
+        b4 = (Button) findViewById(R.id.b4);
+        b5 = (Button) findViewById(R.id.b5);
+        b6 = (Button) findViewById(R.id.b6);
+        b7 = (Button) findViewById(R.id.b7);
+        b8 = (Button) findViewById(R.id.b8);
+        b9 = (Button) findViewById(R.id.b9);
 
         b1.setOnClickListener(this);
         b2.setOnClickListener(this);
@@ -53,7 +55,7 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
         b8.setOnClickListener(this);
         b9.setOnClickListener(this);
 
-        jLabel2=(TextView)findViewById(R.id.label);
+        jLabel2 = (TextView) findViewById(R.id.label);
 
         iniciar();
 
@@ -85,7 +87,6 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     private boolean gano(int j) {
         int a, b, c, d, e, f, g, h, i;
         a = juego[0][0];
@@ -98,26 +99,25 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
         h = juego[2][1];
         i = juego[2][2];
         if (a == j && a == b && b == c) {
-            if(j==1){
-                b1.setBackgroundResource(R.drawable.exit);
-                b2.setBackgroundResource(R.drawable.exit);
-                b3.setBackgroundResource(R.drawable.exit);
-            }else{
+            if (j == 1) {
+                b1.setBackgroundResource(R.drawable.jugador2);
+                b2.setBackgroundResource(R.drawable.jugador2);
+                b3.setBackgroundResource(R.drawable.jugador2);
+            } else {
                 b1.setBackgroundResource(R.drawable.checked);
                 b2.setBackgroundResource(R.drawable.checked);
                 b3.setBackgroundResource(R.drawable.checked);
             }
 
 
-
             return true;
         }
         if (d == j && d == e && e == f) {
-            if(j==1){
-                b4.setBackgroundResource(R.drawable.exit);
-                b5.setBackgroundResource(R.drawable.exit);
-                b6.setBackgroundResource(R.drawable.exit);
-            }else{
+            if (j == 1) {
+                b4.setBackgroundResource(R.drawable.jugador2);
+                b5.setBackgroundResource(R.drawable.jugador2);
+                b6.setBackgroundResource(R.drawable.jugador2);
+            } else {
                 b4.setBackgroundResource(R.drawable.checked);
                 b5.setBackgroundResource(R.drawable.checked);
                 b6.setBackgroundResource(R.drawable.checked);
@@ -125,11 +125,11 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         if (g == j && g == h && h == i) {
-            if(j==1){
-                b7.setBackgroundResource(R.drawable.exit);
-                b8.setBackgroundResource(R.drawable.exit);
-                b9.setBackgroundResource(R.drawable.exit);
-            }else{
+            if (j == 1) {
+                b7.setBackgroundResource(R.drawable.jugador2);
+                b8.setBackgroundResource(R.drawable.jugador2);
+                b9.setBackgroundResource(R.drawable.jugador2);
+            } else {
                 b7.setBackgroundResource(R.drawable.checked);
                 b8.setBackgroundResource(R.drawable.checked);
                 b9.setBackgroundResource(R.drawable.checked);
@@ -137,11 +137,11 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         if (a == j && a == d && d == g) {
-            if(j==1){
-                b1.setBackgroundResource(R.drawable.exit);
-                b4.setBackgroundResource(R.drawable.exit);
-                b7.setBackgroundResource(R.drawable.exit);
-            }else{
+            if (j == 1) {
+                b1.setBackgroundResource(R.drawable.jugador2);
+                b4.setBackgroundResource(R.drawable.jugador2);
+                b7.setBackgroundResource(R.drawable.jugador2);
+            } else {
                 b1.setBackgroundResource(R.drawable.checked);
                 b4.setBackgroundResource(R.drawable.checked);
                 b7.setBackgroundResource(R.drawable.checked);
@@ -149,11 +149,11 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         if (b == j && b == e && e == h) {
-            if(j==1){
-                b2.setBackgroundResource(R.drawable.exit);
-                b5.setBackgroundResource(R.drawable.exit);
-                b8.setBackgroundResource(R.drawable.exit);
-            }else{
+            if (j == 1) {
+                b2.setBackgroundResource(R.drawable.jugador2);
+                b5.setBackgroundResource(R.drawable.jugador2);
+                b8.setBackgroundResource(R.drawable.jugador2);
+            } else {
                 b2.setBackgroundResource(R.drawable.checked);
                 b5.setBackgroundResource(R.drawable.checked);
                 b8.setBackgroundResource(R.drawable.checked);
@@ -161,11 +161,11 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         if (c == j && c == f && f == i) {
-            if(j==1){
-                b3.setBackgroundResource(R.drawable.exit);
-                b6.setBackgroundResource(R.drawable.exit);
-                b9.setBackgroundResource(R.drawable.exit);
-            }else{
+            if (j == 1) {
+                b3.setBackgroundResource(R.drawable.jugador2);
+                b6.setBackgroundResource(R.drawable.jugador2);
+                b9.setBackgroundResource(R.drawable.jugador2);
+            } else {
                 b3.setBackgroundResource(R.drawable.checked);
                 b6.setBackgroundResource(R.drawable.checked);
                 b9.setBackgroundResource(R.drawable.checked);
@@ -173,11 +173,11 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         if (a == j && a == e && e == i) {
-            if(j==1){
-                b1.setBackgroundResource(R.drawable.exit);
-                b5.setBackgroundResource(R.drawable.exit);
-                b9.setBackgroundResource(R.drawable.exit);
-            }else{
+            if (j == 1) {
+                b1.setBackgroundResource(R.drawable.jugador2);
+                b5.setBackgroundResource(R.drawable.jugador2);
+                b9.setBackgroundResource(R.drawable.jugador2);
+            } else {
                 b1.setBackgroundResource(R.drawable.checked);
                 b5.setBackgroundResource(R.drawable.checked);
                 b9.setBackgroundResource(R.drawable.checked);
@@ -185,11 +185,11 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         if (c == j && c == e && e == g) {
-            if(j==1){
-                b3.setBackgroundResource(R.drawable.exit);
-                b5.setBackgroundResource(R.drawable.exit);
-                b7.setBackgroundResource(R.drawable.exit);
-            }else{
+            if (j == 1) {
+                b3.setBackgroundResource(R.drawable.jugador2);
+                b5.setBackgroundResource(R.drawable.jugador2);
+                b7.setBackgroundResource(R.drawable.jugador2);
+            } else {
                 b3.setBackgroundResource(R.drawable.checked);
                 b5.setBackgroundResource(R.drawable.checked);
                 b7.setBackgroundResource(R.drawable.checked);
@@ -199,27 +199,27 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
         return false;
     }
 
-    public void jugarDeNuevo(View view){
+    public void jugarDeNuevo(View view) {
         iniciar();
     }
 
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.b1:
                 if (!gano(1) && !gano(2)) {
 
                     if (juego[0][0] == 0) {
-                        if(sw){
+                        if (sw) {
                             jLabel2.setText("Turno del jugador 2...");
-                        }else{
+                        } else {
                             jLabel2.setText("Turno del jugador 1...");
                         }
 
                         c++;
                         if (sw) {
-                            b1.setBackgroundResource(R.drawable.exit);
+                            b1.setBackgroundResource(R.drawable.jugador2);
                             juego[0][0] = 1;
                             if (gano(1)) {
                                 jLabel2.setText("El jugador 1 gano...");
@@ -251,15 +251,15 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
                 if (!gano(1) && !gano(2)) {
 
                     if (juego[0][1] == 0) {
-                        if(sw){
+                        if (sw) {
                             jLabel2.setText("Turno del jugador 2...");
-                        }else{
+                        } else {
                             jLabel2.setText("Turno del jugador 1...");
                         }
 
                         c++;
                         if (sw) {
-                            b2.setBackgroundResource(R.drawable.exit);
+                            b2.setBackgroundResource(R.drawable.jugador2);
                             juego[0][1] = 1;
                             if (gano(1)) {
                                 jLabel2.setText("El jugador 1 gano...");
@@ -291,15 +291,15 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
                 if (!gano(1) && !gano(2)) {
 
                     if (juego[0][2] == 0) {
-                        if(sw){
+                        if (sw) {
                             jLabel2.setText("Turno del jugador 2...");
-                        }else{
+                        } else {
                             jLabel2.setText("Turno del jugador 1...");
                         }
 
                         c++;
                         if (sw) {
-                            b3.setBackgroundResource(R.drawable.exit);
+                            b3.setBackgroundResource(R.drawable.jugador2);
                             juego[0][2] = 1;
                             if (gano(1)) {
                                 jLabel2.setText("El jugador 1 gano...");
@@ -331,15 +331,15 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
                 if (!gano(1) && !gano(2)) {
 
                     if (juego[1][0] == 0) {
-                        if(sw){
+                        if (sw) {
                             jLabel2.setText("Turno del jugador 2...");
-                        }else{
+                        } else {
                             jLabel2.setText("Turno del jugador 1...");
                         }
 
                         c++;
                         if (sw) {
-                            b4.setBackgroundResource(R.drawable.exit);
+                            b4.setBackgroundResource(R.drawable.jugador2);
                             juego[1][0] = 1;
                             if (gano(1)) {
                                 jLabel2.setText("El jugador 1 gano...");
@@ -371,15 +371,15 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
                 if (!gano(1) && !gano(2)) {
 
                     if (juego[1][1] == 0) {
-                        if(sw){
+                        if (sw) {
                             jLabel2.setText("Turno del jugador 2...");
-                        }else{
+                        } else {
                             jLabel2.setText("Turno del jugador 1...");
                         }
 
                         c++;
                         if (sw) {
-                            b5.setBackgroundResource(R.drawable.exit);
+                            b5.setBackgroundResource(R.drawable.jugador2);
                             juego[1][1] = 1;
                             if (gano(1)) {
                                 jLabel2.setText("El jugador 1 gano...");
@@ -411,15 +411,15 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
                 if (!gano(1) && !gano(2)) {
 
                     if (juego[1][2] == 0) {
-                        if(sw){
+                        if (sw) {
                             jLabel2.setText("Turno del jugador 2...");
-                        }else{
+                        } else {
                             jLabel2.setText("Turno del jugador 1...");
                         }
 
                         c++;
                         if (sw) {
-                            b6.setBackgroundResource(R.drawable.exit);
+                            b6.setBackgroundResource(R.drawable.jugador2);
                             juego[1][2] = 1;
                             if (gano(1)) {
                                 jLabel2.setText("El jugador 1 gano...");
@@ -451,15 +451,15 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
                 if (!gano(1) && !gano(2)) {
 
                     if (juego[2][0] == 0) {
-                        if(sw){
+                        if (sw) {
                             jLabel2.setText("Turno del jugador 2...");
-                        }else{
+                        } else {
                             jLabel2.setText("Turno del jugador 1...");
                         }
 
                         c++;
                         if (sw) {
-                            b7.setBackgroundResource(R.drawable.exit);
+                            b7.setBackgroundResource(R.drawable.jugador2);
                             juego[2][0] = 1;
                             if (gano(1)) {
                                 jLabel2.setText("El jugador 1 gano...");
@@ -491,15 +491,15 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
                 if (!gano(1) && !gano(2)) {
 
                     if (juego[2][1] == 0) {
-                        if(sw){
+                        if (sw) {
                             jLabel2.setText("Turno del jugador 2...");
-                        }else{
+                        } else {
                             jLabel2.setText("Turno del jugador 1...");
                         }
 
                         c++;
                         if (sw) {
-                            b8.setBackgroundResource(R.drawable.exit);
+                            b8.setBackgroundResource(R.drawable.jugador2);
                             juego[2][1] = 1;
                             if (gano(1)) {
                                 jLabel2.setText("El jugador 1 gano...");
@@ -532,15 +532,15 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
                 if (!gano(1) && !gano(2)) {
 
                     if (juego[2][2] == 0) {
-                        if(sw){
+                        if (sw) {
                             jLabel2.setText("Turno del jugador 2...");
-                        }else{
+                        } else {
                             jLabel2.setText("Turno del jugador 1...");
                         }
 
                         c++;
                         if (sw) {
-                            b9.setBackgroundResource(R.drawable.exit);
+                            b9.setBackgroundResource(R.drawable.jugador2);
                             juego[2][2] = 1;
                             if (gano(1)) {
                                 jLabel2.setText("El jugador 1 gano...");
@@ -573,10 +573,11 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this,"Bye...",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Bye...", Toast.LENGTH_SHORT).show();
         super.onBackPressed();
     }
-    private void pausar(){
+
+    private void pausar() {
 
     }
 }

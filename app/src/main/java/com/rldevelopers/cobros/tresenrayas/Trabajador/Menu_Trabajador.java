@@ -379,6 +379,7 @@ public class Menu_Trabajador extends AppCompatActivity {
 
         final TextView fecha = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_fecha);
         final TextView saldo = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_saldo);
+        final TextView porCobrar = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_por_cobrar);
         final TextView ingreso = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_ingreso);
         final TextView egreso = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_egreso);
         final TextView cargado = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_cargado);
@@ -408,6 +409,7 @@ public class Menu_Trabajador extends AppCompatActivity {
                     egreso.setText(Html.fromHtml("<b>Egreso: </b>" + (String) root.get("egresos") + " Bs."));
                     ingreso.setText(Html.fromHtml("<b>Ingreso: </b>" + (String) root.get("ingresos") + " Bs."));
                     saldo.setText((String) root.get("saldo") + " Bs.");
+                    porCobrar.setText((String) root.get("porCobrar") + " Bs.");
                     cargado.setText(Html.fromHtml("<b>Cargado: </b>" + (String) root.get("cargado") + " Bs."));
                     prestado.setText(Html.fromHtml("<b>Prestado: </b>" + (String) root.get("prestado") + " Bs."));
                     gastado.setText(Html.fromHtml("<b>Gastado: </b>" + (String) root.get("gastado") + " Bs."));
@@ -575,7 +577,7 @@ public class Menu_Trabajador extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //TRABAJADOR
-        /*AlertDialog.Builder cliente = new AlertDialog.Builder(Menu.this);
+  /*      AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Trabajador.this);
         cliente.setTitle("Salir");
         cliente.setMessage("Elija una opcion:");
         cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
@@ -590,6 +592,6 @@ public class Menu_Trabajador extends AppCompatActivity {
         });
         cliente.show();*/
         //SUPER USUARIO
-        startActivity(new Intent(this, Menu_Principal.class));
+       startActivity(new Intent(this, Menu_Principal.class));
     }
 }

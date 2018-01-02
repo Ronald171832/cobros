@@ -31,10 +31,16 @@ import com.android.volley.toolbox.Volley;
 import com.rldevelopers.cobros.tresenrayas.Cliente.ClienteListAdapter;
 import com.rldevelopers.cobros.tresenrayas.Cliente.ClienteModel;
 import com.rldevelopers.cobros.tresenrayas.Cliente.MapsActivity;
+import com.rldevelopers.cobros.tresenrayas.Cuenta.Cuenta;
 import com.rldevelopers.cobros.tresenrayas.R;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.PasoDeParametros;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.Rutas;
-import com.rldevelopers.cobros.tresenrayas.Trabajador.*;
+import com.rldevelopers.cobros.tresenrayas.Trabajador.HistoricoListAdapter;
+import com.rldevelopers.cobros.tresenrayas.Trabajador.HistoricoModel;
+import com.rldevelopers.cobros.tresenrayas.Trabajador.Login_Trabajador;
+import com.rldevelopers.cobros.tresenrayas.Trabajador.MovimientoListAdapter;
+import com.rldevelopers.cobros.tresenrayas.Trabajador.MovimientoModel;
+import com.rldevelopers.cobros.tresenrayas.Trabajador.Trabajador;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -135,10 +141,10 @@ public class Menu_Principal extends AppCompatActivity {
         final ArrayList<String> listItems = new ArrayList<>();
         listItems.add("Ver Cuentas");
         listItems.add("Ver en Mapa");
-        new AlertDialog.Builder(getApplicationContext())
+        new AlertDialog.Builder(Menu_Principal.this)
                 .setTitle("Elija una Opción:")
                 .setCancelable(false)
-                .setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, listItems),
+                .setAdapter(new ArrayAdapter<String>(Menu_Principal.this, android.R.layout.simple_list_item_1, listItems),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int item) {
@@ -167,18 +173,22 @@ public class Menu_Principal extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    ListView listViewClientes;
+
     public void verClientes() {
         String URL = Rutas.SU_CLIENTES;
         final Dialog verInforme = new Dialog(Menu_Principal.this);
         verInforme.setTitle("Clientes");
         verInforme.setContentView(R.layout.trabajador_informe_detalle);
         final TextView titulo = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_detalle_titulo);
-        final ListView listView = (ListView) verInforme.findViewById(R.id.lv_movimiento);
+        listViewClientes = (ListView) verInforme.findViewById(R.id.lv_movimiento);
         titulo.setText("Lista de Clientes");
         listaClientes = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Cargando Clientes...");
         progressDialog.show();
+        tocarListViewClientes();
         RequestQueue queue = Volley.newRequestQueue(Menu_Principal.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
             @Override
@@ -200,7 +210,7 @@ public class Menu_Principal extends AppCompatActivity {
                         listaClientes.add(clienteModel);
                     }
                     clienteListAdapter = new ClienteListAdapter(Menu_Principal.this, R.layout.clientes_card, listaClientes);
-                    listView.setAdapter(clienteListAdapter);
+                    listViewClientes.setAdapter(clienteListAdapter);
                     progressDialog.dismiss();
 
                 } catch (JSONException e) {
@@ -222,6 +232,18 @@ public class Menu_Principal extends AppCompatActivity {
         verInforme.getWindow().setLayout(width, height);
         verInforme.show();
 
+    }
+
+    public void tocarListViewClientes() {
+        listViewClientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(Menu_Principal.this, Cuenta.class);
+                intent.putExtra("borrarBoton", true);
+                PasoDeParametros.CODIGO_DE_CLIENTE = listaClientes.get(i).getCodigo();
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -419,6 +441,7 @@ public class Menu_Principal extends AppCompatActivity {
 
         final TextView fecha = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_fecha);
         final TextView saldo = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_saldo);
+        final TextView porCobrar = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_por_cobrar);
         final TextView ingreso = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_ingreso);
         final TextView egreso = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_egreso);
         final TextView cargado = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_cargado);
@@ -448,6 +471,7 @@ public class Menu_Principal extends AppCompatActivity {
                     egreso.setText(Html.fromHtml("<b>Egreso: </b>" + (String) root.get("egresos") + " Bs."));
                     ingreso.setText(Html.fromHtml("<b>Ingreso: </b>" + (String) root.get("ingresos") + " Bs."));
                     saldo.setText((String) root.get("saldo") + " Bs.");
+                    porCobrar.setText((String) root.get("porCobrar") + " Bs.");
                     cargado.setText(Html.fromHtml("<b>Cargado: </b>" + (String) root.get("cargado") + " Bs."));
                     prestado.setText(Html.fromHtml("<b>Prestado: </b>" + (String) root.get("prestado") + " Bs."));
                     gastado.setText(Html.fromHtml("<b>Gastado: </b>" + (String) root.get("gastado") + " Bs."));
@@ -553,19 +577,19 @@ public class Menu_Principal extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Principal.this);
-        cliente.setTitle("Salir");
-        cliente.setMessage("Elija una opcion:");
-        cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                finishAffinity();
-            }
-        });
-        cliente.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-//
-            }
-        });
-        cliente.show();
+            AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Principal.this);
+            cliente.setTitle("Salir");
+            cliente.setMessage("Elija una opcion:");
+            cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    finishAffinity();
+                }
+            });
+            cliente.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+    //
+                }
+            });
+            cliente.show();
     }
 }

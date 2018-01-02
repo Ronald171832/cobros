@@ -56,6 +56,7 @@ public class Cuenta extends AppCompatActivity {
     private ListView lv;
     private CuentaListAdapter adapter;
     private ProgressDialog progressDialog;
+    boolean borrarBoton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class Cuenta extends AppCompatActivity {
     }
 
     private void init() {
+        borrarBoton = getIntent().getBooleanExtra("borrarBoton", false);
         CODIGO = PasoDeParametros.CODIGO_DE_CLIENTE;
         listaCuentas = new ArrayList<>();
         lv = (ListView) findViewById(R.id.lv_cuentas);
@@ -165,6 +167,10 @@ public class Cuenta extends AppCompatActivity {
 
         Button bt_abonar = (Button) agregarCuenta.findViewById(R.id.bt_cuentaDetalle_abonar);
         Button bt_ver = (Button) agregarCuenta.findViewById(R.id.bt_cuentaDetalle_ver);
+        if (borrarBoton) {
+            bt_abonar.setVisibility(View.INVISIBLE);
+            et_abono.setVisibility(View.GONE);
+        }
         bt_abonar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
