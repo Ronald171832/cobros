@@ -78,6 +78,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="3dp"
                     android:inputType="number"
+                    android:maxLength="8"
                     android:hint="Celular:"
                     android:textSize="20dp" />
             </android.support.design.widget.TextInputLayout>

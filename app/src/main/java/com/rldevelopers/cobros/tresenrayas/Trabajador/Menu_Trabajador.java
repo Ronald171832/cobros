@@ -41,7 +41,6 @@ import com.rldevelopers.cobros.tresenrayas.Cliente.Cliente;
 import com.rldevelopers.cobros.tresenrayas.R;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.PasoDeParametros;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.Rutas;
-import com.rldevelopers.cobros.tresenrayas.Vistas.Menu_Principal;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -512,7 +511,8 @@ public class Menu_Trabajador extends AppCompatActivity {
 
     }
 
-
+    //registrar gasto
+    boolean registrarGasto=true;
     private void registrarGasto() {
         final Dialog registrar_gasto = new Dialog(Menu_Trabajador.this);
         registrar_gasto.setTitle("Agregar Credito");
@@ -523,7 +523,6 @@ public class Menu_Trabajador extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String mo = monto.getText().toString().trim();
                 String de = descripcion.getText().toString().trim();
                 if (mo.isEmpty()) {
@@ -535,32 +534,40 @@ public class Menu_Trabajador extends AppCompatActivity {
                     descripcion.requestFocus();
                     return;
                 }
-                String cod_tra = sharedPreferences.getString("codigo_trabajador", "");
-                String URL = Rutas.REGISTRAR_GASTO + mo + "/" + de + "/" + cod_tra;
-                RequestQueue queue = Volley.newRequestQueue(Menu_Trabajador.this);
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject root = new JSONObject(response);
-                            int respuesta = (int) root.get("confirmacion");
-                            if (respuesta == 1) {
-                                Toast.makeText(Menu_Trabajador.this, "Gasto registrado Satisfactoriamente", Toast.LENGTH_LONG).show();
-                                registrar_gasto.cancel();
-                            } else if (respuesta == 0) {
-                                Toast.makeText(Menu_Trabajador.this, "No tiene dinero suficiente!", Toast.LENGTH_LONG).show();
+                if(registrarGasto){
+                    registrarGasto=!registrarGasto;
+                    String cod_tra = sharedPreferences.getString("codigo_trabajador", "");
+                    String URL = Rutas.REGISTRAR_GASTO + mo + "/" + de + "/" + cod_tra;
+                    RequestQueue queue = Volley.newRequestQueue(Menu_Trabajador.this);
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject root = new JSONObject(response);
+                                int respuesta = (int) root.get("confirmacion");
+                                if (respuesta == 1) {
+                                    Toast.makeText(Menu_Trabajador.this, "Gasto registrado Satisfactoriamente", Toast.LENGTH_LONG).show();
+                                    registrarGasto=!registrarGasto;
+                                    registrar_gasto.cancel();
+                                } else if (respuesta == 0) {
+                                    Toast.makeText(Menu_Trabajador.this, "No tiene dinero suficiente!", Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                queue.add(stringRequest);
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            registrarGasto=!registrarGasto;
+                            Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    queue.add(stringRequest);
+                }else{
+                    Toast.makeText(Menu_Trabajador.this, "Operacion en curso espere por favor!", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
         int width = (int) (Menu_Trabajador.this.getResources().getDisplayMetrics().widthPixels);
@@ -577,7 +584,7 @@ public class Menu_Trabajador extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //TRABAJADOR
-  /*      AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Trabajador.this);
+        AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Trabajador.this);
         cliente.setTitle("Salir");
         cliente.setMessage("Elija una opcion:");
         cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
@@ -590,8 +597,8 @@ public class Menu_Trabajador extends AppCompatActivity {
 //
             }
         });
-        cliente.show();*/
+        cliente.show();
         //SUPER USUARIO
-       startActivity(new Intent(this, Menu_Principal.class));
+       //startActivity(new Intent(this, Menu_Principal.class));
     }
 }

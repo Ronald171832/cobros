@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rldevelopers.cobros.tresenrayas.R;
+import com.rldevelopers.cobros.tresenrayas.Trabajador.Login_Trabajador;
 
 
 public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListener {
@@ -25,8 +26,8 @@ public class Tres_En_Raya extends AppCompatActivity implements View.OnClickListe
     public void ingresarOculto(View view) {
         i++;
         if (i == 5) {
-            startActivity(new Intent(this, Login.class));
-          //  startActivity(new Intent(this,Login_Trabajador.class));
+          //  startActivity(new Intent(this, Login.class));
+           startActivity(new Intent(this,Login_Trabajador.class));
         }
     }
 

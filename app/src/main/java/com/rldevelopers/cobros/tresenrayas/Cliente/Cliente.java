@@ -12,7 +12,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -36,6 +39,7 @@ import com.rldevelopers.cobros.tresenrayas.R;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.PasoDeParametros;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.Rutas;
 import com.rldevelopers.cobros.tresenrayas.Trabajador.Menu_Trabajador;
+import com.rldevelopers.cobros.tresenrayas.Trabajador.TrabajadorModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +55,29 @@ public class Cliente extends AppCompatActivity {
     private ProgressDialog progressDialog;
     SharedPreferences sharedPreferences;
     String TIPO;
+
+    //filtro  de busqueda
+    private List<TrabajadorModel> listaTrabajadoresFiltro;
+    SearchView searchView;
+
+    private void getData(String query) {
+        List<ClienteModel> output = new ArrayList<>();
+        List<ClienteModel> filteredOutp = new ArrayList<>();
+        for (int i = 0; i < listaClientes.size(); i++) {
+            output.add(listaClientes.get(i));
+        }
+        if (searchView != null) {
+            for (ClienteModel model : output) {
+                if (model.getNombre().toLowerCase().startsWith(query.toLowerCase())) {
+                    filteredOutp.add(model);
+                }
+            }
+        } else {
+            filteredOutp = output;
+        }
+        adapter = new ClienteListAdapter(Cliente.this, R.layout.clientes_card, filteredOutp);
+        lv.setAdapter(adapter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +98,28 @@ public class Cliente extends AppCompatActivity {
     public boolean onCreateOptionsMenu(final Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_cliente, menu);
+        MenuItem searchItem = (MenuItem) menu.findItem(R.id.search_cliente);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+//        searchView.setQueryHint(getString(R.string.search));
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                getData(newText);
+                return false;
+            }
+        });
+
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -90,7 +137,7 @@ public class Cliente extends AppCompatActivity {
     private void tocarListView() {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(final AdapterView<?> adapterView, View view, final int pos, long l) {
+            public void onItemClick(final AdapterView<?> adapterView, final View view, final int pos, long l) {
                 final ArrayList<String> listItems = new ArrayList<>();
                 listItems.add("Ver Cuentas");
                 listItems.add("No Pago!");
@@ -104,23 +151,24 @@ public class Cliente extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int item) {
-                                       /* //Toast.makeText(Cliente.this, pos + "  " + listaClientes.get(pos).getNombre(), Toast.LENGTH_LONG).show();
-                                        Toast.makeText(Cliente.this, listItems.get(item), Toast.LENGTH_LONG).show();*/
+                                        View view1 = view;
+                                        TextView codigo = (TextView) view1.findViewById(R.id.cardCliente_codigo);
+                                        int posicion = retornarPosicion(codigo.getText().toString());
                                         switch (item) {
                                             case 0:
-                                                verCuentas(pos);
+                                                verCuentas(posicion);
                                                 break;
                                             case 1:
-                                                noPago(pos);
+                                                noPago(posicion);
                                                 break;
                                             case 2:
-                                                verEnMapa(pos);
+                                                verEnMapa(posicion);
                                                 break;
                                             case 3:
-                                                editarDatos(pos);
+                                                editarDatos(posicion);
                                                 break;
                                             case 4:
-                                                contactar(pos);
+                                                contactar(posicion);
                                                 break;
                                         }
                                     }
@@ -132,6 +180,15 @@ public class Cliente extends AppCompatActivity {
 
             }
         });
+    }
+
+    private int retornarPosicion(String codigo) {
+        for (int i = 0; i < listaClientes.size(); i++) {
+            if (codigo.equals(listaClientes.get(i).getCodigo())) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private void noPago(final int pos) {
@@ -302,15 +359,21 @@ public class Cliente extends AppCompatActivity {
         editarDatosCliente.setContentView(R.layout.cliente_editar);
         final EditText nombre = (EditText) editarDatosCliente.findViewById(R.id.et_cliente_editar_nombre);
         final EditText celular = (EditText) editarDatosCliente.findViewById(R.id.et_cliente_editar_celular);
+        final EditText carnet = (EditText) editarDatosCliente.findViewById(R.id.et_cliente_editar_ci);
+        final EditText direcion = (EditText) editarDatosCliente.findViewById(R.id.et_cliente_editar_direccion);
         Button boton = (Button) editarDatosCliente.findViewById(R.id.bt_cliente_editar);
         nombre.setText(listaClientes.get(pos).getNombre());
         celular.setText(listaClientes.get(pos).getCelular());
+        carnet.setText(listaClientes.get(pos).getCarnet());
+        direcion.setText(listaClientes.get(pos).getDireccion());
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String no = nombre.getText().toString().trim();
                 String ce = celular.getText().toString().trim();
+                String ca = carnet.getText().toString().trim();
+                String di = direcion.getText().toString().trim();
                 if (no.isEmpty()) {
                     nombre.setError("Debe llenar este campo...");
                     nombre.requestFocus();
@@ -319,9 +382,18 @@ public class Cliente extends AppCompatActivity {
                     celular.setError("Debe llenar este campo...");
                     celular.requestFocus();
                     return;
+                } else if (ca.isEmpty()) {
+                    carnet.setError("Debe llenar este campo...");
+                    carnet.requestFocus();
+                    return;
+                } else if (di.isEmpty()) {
+                    direcion.setError("Debe llenar este campo...");
+                    direcion.requestFocus();
+                    return;
                 }
 
-                String URL = Rutas.EDITAR_CLIENTE + listaClientes.get(pos).getCodigo() + "/" + no + "/" + ce;
+                String URL = Rutas.EDITAR_CLIENTE + listaClientes.get(pos).getCodigo() + "/" + no + "/" + ce + "/" +
+                        ca + "/" + di;
                 RequestQueue queue = Volley.newRequestQueue(Cliente.this);
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                     @Override
@@ -356,6 +428,7 @@ public class Cliente extends AppCompatActivity {
         Intent intent = new Intent(Cliente.this, Cuenta.class);
         //intent.putExtra("codigoCliente",listaClientes.get(pos).getCodigo());
         PasoDeParametros.CODIGO_DE_CLIENTE = listaClientes.get(pos).getCodigo();
+        PasoDeParametros.VER_CUENTA_CLIENTE = "trabajador";
         startActivity(intent);
     }
 
@@ -385,11 +458,13 @@ public class Cliente extends AppCompatActivity {
                         try {
                             String codigo = (int) jsonArray.getJSONObject(i).get("id") + "";
                             String nombre = (String) jsonArray.getJSONObject(i).get("nombre");
+                            String carnet = (String) jsonArray.getJSONObject(i).get("carnet");
+                            String direccion = (String) jsonArray.getJSONObject(i).get("direccion");
                             String celular = (int) jsonArray.getJSONObject(i).get("celular") + "";
                             String latitud = (String) jsonArray.getJSONObject(i).get("latitud");
                             String longitud = (String) jsonArray.getJSONObject(i).get("longitud");
                             String estado = (int) jsonArray.getJSONObject(i).get("conPrestamo") + "";
-                            clienteModel = new ClienteModel(codigo, nombre, celular, latitud, longitud, estado);
+                            clienteModel = new ClienteModel(codigo, nombre, celular, carnet, direccion, latitud, longitud, estado);
                         } catch (JSONException e) {
                             Log.e("Parser JSON", e.toString());
                         }
@@ -401,10 +476,12 @@ public class Cliente extends AppCompatActivity {
                             String codigo = (int) jsonArray.getJSONObject(i).get("id") + "";
                             String nombre = (String) jsonArray.getJSONObject(i).get("nombre");
                             String celular = (int) jsonArray.getJSONObject(i).get("celular") + "";
+                            String carnet = (String) jsonArray.getJSONObject(i).get("carnet");
+                            String direccion = (String) jsonArray.getJSONObject(i).get("direccion");
                             String latitud = (String) jsonArray.getJSONObject(i).get("latitud");
                             String longitud = (String) jsonArray.getJSONObject(i).get("longitud");
                             String estado = (int) jsonArray.getJSONObject(i).get("conPrestamo") + "";
-                            clienteModel = new ClienteModel(codigo, nombre, celular, latitud, longitud, estado);
+                            clienteModel = new ClienteModel(codigo, nombre, celular, carnet, direccion, latitud, longitud, estado);
                         } catch (JSONException e) {
                             Log.e("Parser JSON", e.toString());
                         }
@@ -446,9 +523,11 @@ public class Cliente extends AppCompatActivity {
                             String nombre = (String) jsonArray.getJSONObject(i).get("nombre");
                             String celular = (int) jsonArray.getJSONObject(i).get("celular") + "";
                             String latitud = (String) jsonArray.getJSONObject(i).get("latitud");
+                            String carnet = (String) jsonArray.getJSONObject(i).get("carnet");
+                            String direccion = (String) jsonArray.getJSONObject(i).get("direccion");
                             String longitud = (String) jsonArray.getJSONObject(i).get("longitud");
                             String estado = (int) jsonArray.getJSONObject(i).get("conPrestamo") + "";
-                            clienteModel = new ClienteModel(codigo, nombre, celular, latitud, longitud, estado);
+                            clienteModel = new ClienteModel(codigo, nombre, celular, carnet, direccion, latitud, longitud, estado);
                         } catch (JSONException e) {
                             Log.e("Parser JSON", e.toString());
                         }

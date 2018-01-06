@@ -9,21 +9,55 @@ public class ClienteModel {
     public String codigo;
     public String nombre;
     public String celular;
+    public String carnet;
+
+    public ClienteModel(String codigo, String nombre, String celular, String carnet, String direccion, String latitud, String longitud, String estado) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.celular = celular;
+        this.carnet = carnet;
+        this.direccion = direccion;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.estado = estado;
+    }
+
+    public String direccion;
     public String latitud;
     public String longitud;
     public String estado;
 
-    public ClienteModel(String codigo, String nombre, String celular, String estado) {
+    public ClienteModel(String codigo, String nombre, String celular, String carnet, String direccion, String estado) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.celular = celular;
+        this.carnet = carnet;
+        this.direccion = direccion;
         this.estado = estado;
     }
+
+
 
     public ClienteModel() {
     }
 
-    public ClienteModel(String codigo, String nombre, String celular, String latitud, String longitud, String estado) {
+    public String getCarnet() {
+        return carnet;
+    }
+
+    public void setCarnet(String carnet) {
+        this.carnet = carnet;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    /*public ClienteModel(String codigo, String nombre, String celular, String latitud, String longitud, String estado) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.celular = celular;
@@ -31,7 +65,7 @@ public class ClienteModel {
         this.longitud = longitud;
         this.estado = estado;
     }
-
+*/
     public String getCodigo() {
         return codigo;
     }

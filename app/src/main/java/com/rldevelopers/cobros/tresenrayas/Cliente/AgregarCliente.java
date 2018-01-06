@@ -36,7 +36,7 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
     private GoogleMap mMap;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     LatLng ubicacion;
-    EditText nombre, celular;
+    EditText nombre, celular, carnet, direccion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,8 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
     private void init() {
         nombre = (EditText) findViewById(R.id.et_cliente_nombre);
         celular = (EditText) findViewById(R.id.et_cliente_celular);
-
+        carnet = (EditText) findViewById(R.id.et_cliente_carnet);
+        direccion = (EditText) findViewById(R.id.et_cliente_direccion);
     }
 
     public void csatelite(View view) {
@@ -71,42 +72,54 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
+    //agregar cliente
+    boolean agregarCliente = true;
+
     public void agregarCliente(View view) {
         if (!validar()) {
             return;
         }
-
-        String la = ubicacion.latitude + "";
-        String lo = ubicacion.longitude + "";
-        String URL = Rutas.AGREGAR_CLIENTE + nombre.getText().toString().trim() +
-                "/" + celular.getText().toString().trim() + "/" + la + "/" + lo;
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject root = new JSONObject(response);
-                    int respuesta = (int) root.get("confirmacion");
-                    if (respuesta == 1) {
-                        startActivity(new Intent(AgregarCliente.this, Menu_Trabajador.class));
-                        Toast.makeText(AgregarCliente.this, "Cliente agregado Satisfactoriamente", Toast.LENGTH_LONG).show();
+        if (agregarCliente) {
+            agregarCliente = !agregarCliente;
+            String la = ubicacion.latitude + "";
+            String lo = ubicacion.longitude + "";
+            String URL = Rutas.AGREGAR_CLIENTE + nombre.getText().toString().trim() +
+                    "/" + celular.getText().toString().trim() + "/" + carnet.getText().toString().trim() +
+                    "/" + direccion.getText().toString().trim() + "/" + la + "/" + lo;
+            RequestQueue queue = Volley.newRequestQueue(this);
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject root = new JSONObject(response);
+                        int respuesta = (int) root.get("confirmacion");
+                        if (respuesta == 1) {
+                            startActivity(new Intent(AgregarCliente.this, Menu_Trabajador.class));
+                            Toast.makeText(AgregarCliente.this, "Cliente agregado Satisfactoriamente", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
-            }
-        });
-        queue.add(stringRequest);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    agregarCliente = !agregarCliente;
+                    Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
+                }
+            });
+            queue.add(stringRequest);
+        } else {
+            Toast.makeText(AgregarCliente.this, "Operacion en curso espere por favor!", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private boolean validar() {
         String nom = nombre.getText().toString().trim();
         String cel = celular.getText().toString().trim();
+        String car = carnet.getText().toString().trim();
+        String dir = direccion.getText().toString().trim();
 
         if (nom.isEmpty()) {
             nombre.setError("Debe llenar este campo...");
@@ -115,6 +128,14 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
         } else if (cel.isEmpty()) {
             celular.setError("Debe llenar este campo...");
             celular.requestFocus();
+            return false;
+        } else if (car.isEmpty()) {
+            carnet.setError("Debe llenar este campo...");
+            carnet.requestFocus();
+            return false;
+        } else if (dir.isEmpty()) {
+            direccion.setError("Debe llenar este campo...");
+            direccion.requestFocus();
             return false;
         }
         if (ubicacion == null) {

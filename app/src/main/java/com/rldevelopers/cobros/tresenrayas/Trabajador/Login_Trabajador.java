@@ -1,6 +1,8 @@
 package com.rldevelopers.cobros.tresenrayas.Trabajador;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,7 +19,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.rldevelopers.cobros.tresenrayas.R;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.Rutas;
-import com.rldevelopers.cobros.tresenrayas.Vistas.Menu_Principal;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +38,7 @@ public class Login_Trabajador extends AppCompatActivity {
     private void init() {
         sharedPreferences = getSharedPreferences("colombianos", MODE_PRIVATE);
         boolean ingresar = sharedPreferences.getBoolean("trabajador", false);
-       /* if (ingresar) {
+     /*   if (ingresar) {
             startActivity(new Intent(Login_Trabajador.this, Menu_Trabajador.class));
         }*/
         nombre = (EditText) findViewById(R.id.et_trabajador_login_name);
@@ -98,7 +99,7 @@ public class Login_Trabajador extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //TRABAJADOR
-     /*   AlertDialog.Builder cliente = new AlertDialog.Builder(Login_Trabajador.this);
+        AlertDialog.Builder cliente = new AlertDialog.Builder(Login_Trabajador.this);
         cliente.setTitle("Salir");
         cliente.setMessage("Elija una opcion:");
         cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
@@ -111,8 +112,8 @@ public class Login_Trabajador extends AppCompatActivity {
 //
             }
         });
-        cliente.show();*/
+        cliente.show();
         //SUPER USUARIO
-         startActivity(new Intent(this, Menu_Principal.class));
+        //startActivity(new Intent(this, Menu_Principal.class));
     }
 }

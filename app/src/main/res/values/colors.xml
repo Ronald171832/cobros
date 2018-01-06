@@ -6,5 +6,7 @@
     <color name="colorBlanco">#ffffff</color>
     <color name="colorNegro">#000000</color>
     <color name="colorPlomo">#80BDBDBD</color>
-
+    <color name="refresh">#F44336</color>
+    <color name="refresh1">#FFEB3B</color>
+    <color name="refresh2">#4CAF50</color>
 </resources>

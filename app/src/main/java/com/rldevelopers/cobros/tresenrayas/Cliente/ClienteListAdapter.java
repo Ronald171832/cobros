@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +41,14 @@ public class ClienteListAdapter extends ArrayAdapter<ClienteModel> {
         TextView tvCodigo = (TextView) v.findViewById(R.id.cardCliente_codigo);
         TextView tvNombre = (TextView) v.findViewById(R.id.cardCliente_nombre);
         TextView tvCelular = (TextView) v.findViewById(R.id.cardCliente_celular);
+        TextView tvCarnet = (TextView) v.findViewById(R.id.cardCliente_ci);
+        TextView tvDireccion = (TextView) v.findViewById(R.id.cardCliente_direccion);
+
+        tvCelular.setText(Html.fromHtml("<b>Telf: </b>" + listImage.get(position).getCelular()));
+        tvNombre.setText(Html.fromHtml("<b>Nombre: </b>" + listImage.get(position).getNombre()));
+        tvCarnet.setText(Html.fromHtml("<b>CI: </b>" + listImage.get(position).getCarnet()));
+        tvDireccion.setText(Html.fromHtml("<b>Dir: </b>" + listImage.get(position).getDireccion()));
         tvCodigo.setText(listImage.get(position).getCodigo());
-        tvNombre.setText(listImage.get(position).getNombre());
-        tvCelular.setText(listImage.get(position).getCelular());
         if (listImage.get(position).getEstado().equals("0")) {
             tvCodigo.setTextColor(Color.GRAY);
         }

@@ -66,6 +66,7 @@
                     android:layout_marginTop="3dp"
                     android:focusableInTouchMode="true"
                     android:hint="Monto Bs:"
+                    android:maxLength="8"
                     android:inputType="number"
                     android:textSize="20dp" />
             </android.support.design.widget.TextInputLayout>
@@ -84,6 +85,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="3dp"
                     android:hint="Cuota Bs:"
+                    android:maxLength="8"
                     android:inputType="number"
                     android:textSize="20dp" />
             </android.support.design.widget.TextInputLayout>

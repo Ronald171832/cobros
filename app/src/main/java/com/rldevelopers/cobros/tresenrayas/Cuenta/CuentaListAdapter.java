@@ -38,10 +38,12 @@ public class CuentaListAdapter extends ArrayAdapter<CuentaModel> {
 
         View v = inflater.inflate(resource, null);
         TextView tvFecha = (TextView) v.findViewById(R.id.cardCuenta_fecha);
+        TextView tvNombre = (TextView) v.findViewById(R.id.cardCuenta_nombre_trabajdor);
         TextView tvMonto = (TextView) v.findViewById(R.id.cardCuenta_monto);
         TextView tvEstado = (TextView) v.findViewById(R.id.cardCuenta_estado);
 
         tvFecha.setText(listImage.get(position).getFecha());
+        tvNombre.setText(listImage.get(position).getTrabajador());
         tvMonto.setText(listImage.get(position).getMonto() +" Bs.");
         if(listImage.get(position).getEstado().equals("1")){
             tvEstado.setText("Pendiente");

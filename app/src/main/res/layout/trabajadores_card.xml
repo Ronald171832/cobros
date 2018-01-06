@@ -30,10 +30,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/cardTrabajador_codigo"
                         android:layout_width="wrap_content"
@@ -45,18 +47,18 @@
                         android:textColor="@color/colorNegro"
                         android:textSize="15dp"
                         android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/cardTrabajador_contra"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="right"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
+                        android:gravity="right"
                         android:paddingLeft="5dp"
                         android:text="Contra"
                         android:textColor="@color/colorNegro"
-                        android:textSize="15dp"
-                         />
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 

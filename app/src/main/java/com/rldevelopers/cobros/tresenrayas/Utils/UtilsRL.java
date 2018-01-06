@@ -2,6 +2,7 @@ package com.rldevelopers.cobros.tresenrayas.Utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.rldevelopers.cobros.tresenrayas.R;
@@ -32,12 +35,31 @@ public class UtilsRL extends Activity {
 
     }
 
-    public void fragment(){
+    public void fragment() {
+
+        final Dialog registrar_gasto = new Dialog(ctx);
+        registrar_gasto.setTitle("Agregar Credito");
+        registrar_gasto.setContentView(R.layout.trabajador_registrar_gasto);
+        final EditText monto = (EditText) registrar_gasto.findViewById(R.id.et_trabajador_gasto_monto);
+        final EditText descripcion = (EditText) registrar_gasto.findViewById(R.id.et_trabajador_gasto_descripcion);
+        Button boton = (Button) registrar_gasto.findViewById(R.id.bt_trabajador_gasto);
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+      //  int width = (int) (getBaseContext().this.getResources().getDisplayMetrics().widthPixels);
+        //int height = (int) (Activity.this.getResources().getDisplayMetrics().heightPixels * 0.9);
+       // registrar_gasto.getWindow().setLayout(width, height);
+        registrar_gasto.show();
 
     }
+
     public void mensajeToast(String s) {
         Toast.makeText(ctx.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
+
     public void mensajeToastConImagen(String s) {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.login, null);

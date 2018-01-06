@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.rldevelopers.jps.togetherforever.Chat.Chat">
     <item
+        android:id="@+id/search_trabajador"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+    <item
         android:id="@+id/item_add_trabajador"
         android:icon="@drawable/add_trabajador"
         android:title="GALERIA"

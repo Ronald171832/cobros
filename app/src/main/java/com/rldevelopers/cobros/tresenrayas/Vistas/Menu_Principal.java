@@ -201,9 +201,11 @@ public class Menu_Principal extends AppCompatActivity {
                         try {
                             String codigo = (int) jsonArray.getJSONObject(i).get("id") + "";
                             String nombre = (String) jsonArray.getJSONObject(i).get("nombre");
+                            String ci = (String) jsonArray.getJSONObject(i).get("carnet");
+                            String direccion = (String) jsonArray.getJSONObject(i).get("direccion");
                             String estado = (int) jsonArray.getJSONObject(i).get("conPrestamo") + "";
                             String celular = (int) jsonArray.getJSONObject(i).get("celular") + "";
-                            clienteModel = new ClienteModel(codigo, nombre, celular, estado);
+                            clienteModel = new ClienteModel(codigo, nombre, celular, ci, direccion, estado);
                         } catch (JSONException e) {
                             Log.e("Parser JSON", e.toString());
                         }
@@ -241,6 +243,7 @@ public class Menu_Principal extends AppCompatActivity {
                 Intent intent = new Intent(Menu_Principal.this, Cuenta.class);
                 intent.putExtra("borrarBoton", true);
                 PasoDeParametros.CODIGO_DE_CLIENTE = listaClientes.get(i).getCodigo();
+                PasoDeParametros.VER_CUENTA_CLIENTE = "super";
                 startActivity(intent);
             }
         });
@@ -266,6 +269,7 @@ public class Menu_Principal extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int item) {
                                 switch (item) {
                                     case 0:
+
                                         abrirCaja();
                                         break;
                                     case 1:
@@ -288,67 +292,99 @@ public class Menu_Principal extends AppCompatActivity {
     }
 
     private void cerrarCaja() {
-        String URL = Rutas.CERRAR_CAJA;
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+        AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Principal.this);
+        cliente.setTitle("Seguro de cerrar Caja?");
+        cliente.setMessage("Elija una opcion:");
+        cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
 
-                try {
-                    JSONObject root = new JSONObject(response);
-                    int respuesta = (int) root.get("confirmacion");
-                    if (respuesta == 1) {
-                        Toast.makeText(getApplicationContext(), "CAJA CERRADA CORRECTAMENTE!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "YA SE CERRO LA CAJA ANTERIORMENTE!", Toast.LENGTH_SHORT).show();
+                String URL = Rutas.CERRAR_CAJA;
+                RequestQueue queue = Volley.newRequestQueue(Menu_Principal.this);
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject root = new JSONObject(response);
+                            int respuesta = (int) root.get("confirmacion");
+                            if (respuesta == 1) {
+                                Toast.makeText(getApplicationContext(), "CAJA CERRADA CORRECTAMENTE!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "YA SE CERRO LA CAJA ANTERIORMENTE!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            //Toast.makeText(getApplicationContext(), "El usuario no existe en la base de datos", Toast.LENGTH_LONG).show();
+                        }
+
+
                     }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problemas de conexion verifique su Internet", Toast.LENGTH_LONG).show();
+                    }
+                });
+                queue.add(stringRequest);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //Toast.makeText(getApplicationContext(), "El usuario no existe en la base de datos", Toast.LENGTH_LONG).show();
-                }
 
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Problemas de conexion verifique su Internet", Toast.LENGTH_LONG).show();
             }
         });
-        queue.add(stringRequest);
+        cliente.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        });
+        cliente.show();
     }
 
     private void abrirCaja() {
-        String URL = Rutas.ABRIR_CAJA;
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+        final AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Principal.this);
+        cliente.setTitle("Seguro de abrir Caja?");
+        cliente.setMessage("Elija una opcion:");
+        cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
 
-                try {
-                    JSONObject root = new JSONObject(response);
-                    int respuesta = (int) root.get("confirmacion");
-                    if (respuesta == 1) {
-                        Toast.makeText(getApplicationContext(), "CAJA ABIERTA CORRECTAMENTE!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "YA SE ABRIÓ LA CAJA ANTERIORMENTE!", Toast.LENGTH_SHORT).show();
+                String URL = Rutas.ABRIR_CAJA;
+                RequestQueue queue = Volley.newRequestQueue(Menu_Principal.this);
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject root = new JSONObject(response);
+                            int respuesta = (int) root.get("confirmacion");
+                            if (respuesta == 1) {
+                                Toast.makeText(getApplicationContext(), "CAJA ABIERTA CORRECTAMENTE!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "YA SE ABRIÓ LA CAJA ANTERIORMENTE!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            //Toast.makeText(getApplicationContext(), "El usuario no existe en la base de datos", Toast.LENGTH_LONG).show();
+                        }
+
+
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //Toast.makeText(getApplicationContext(), "El usuario no existe en la base de datos", Toast.LENGTH_LONG).show();
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Problemas de conexion verifique su Internet", Toast.LENGTH_LONG).show();
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problemas de conexion verifique su Internet", Toast.LENGTH_LONG).show();
+                    }
+                });
+                queue.add(stringRequest);
             }
         });
-        queue.add(stringRequest);
+        cliente.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        cliente.show();
+
     }
 
     public void iniciarSesionTrabajador(View view) {
@@ -577,19 +613,19 @@ public class Menu_Principal extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-            AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Principal.this);
-            cliente.setTitle("Salir");
-            cliente.setMessage("Elija una opcion:");
-            cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    finishAffinity();
-                }
-            });
-            cliente.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-    //
-                }
-            });
-            cliente.show();
+        AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Principal.this);
+        cliente.setTitle("Salir");
+        cliente.setMessage("Elija una opcion:");
+        cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity();
+            }
+        });
+        cliente.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //
+            }
+        });
+        cliente.show();
     }
 }

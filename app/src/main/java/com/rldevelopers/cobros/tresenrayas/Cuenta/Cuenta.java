@@ -58,6 +58,7 @@ public class Cuenta extends AppCompatActivity {
     private ProgressDialog progressDialog;
     boolean borrarBoton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +79,14 @@ public class Cuenta extends AppCompatActivity {
     }
 
     private void cargarListView() {
-        String URL = Rutas.CUENTAS_CLIENTE + CODIGO;
+        String URL="";
+        if(PasoDeParametros.VER_CUENTA_CLIENTE.equals("super")){
+             URL = Rutas.CUENTAS_CLIENTE + CODIGO;
+        }else{
+            sharedPreferences = getSharedPreferences("colombianos", MODE_PRIVATE);
+            String cod_tra = sharedPreferences.getString("codigo_trabajador", "");
+            URL = Rutas.CUENTAS_CLIENTE_TRABAJADOR +CODIGO+"/" +cod_tra;
+        }
         System.out.println(URL);
         RequestQueue queue = Volley.newRequestQueue(Cuenta.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
@@ -275,42 +283,51 @@ public class Cuenta extends AppCompatActivity {
     }
 
     SharedPreferences sharedPreferences;
+    boolean agregarPagoDeAbono = true;
 
     private void agregarPagoDeAbono(final String codigoCredito) {
         sharedPreferences = getSharedPreferences("colombianos", MODE_PRIVATE);
         String cod_tra = sharedPreferences.getString("codigo_trabajador", "");
         String URL = Rutas.PAGO_ABONO + et_abono.getText().toString().trim() +
                 "/" + codigoCredito + "/" + cod_tra;
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject root = new JSONObject(response);
-                    int respuesta = (int) root.get("confirmacion");
-                    if (respuesta == 1) {
-                        Toast.makeText(Cuenta.this, "Abono guardado Satisfactoriamente!", Toast.LENGTH_LONG).show();
-                        mostrarDetalleCuenta(codigoCredito);
-                    } else if (respuesta == 2) {
-                        LayoutInflater inflater = getLayoutInflater();
-                        View layout = inflater.inflate(R.layout.cuenta_pago_finalizado, null);
-                        Toast toast = new Toast(getApplicationContext());
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        toast.setDuration(Toast.LENGTH_LONG);
-                        toast.setView(layout);
-                        toast.show();
+        if (agregarPagoDeAbono) {
+            agregarPagoDeAbono=!agregarPagoDeAbono;
+            RequestQueue queue = Volley.newRequestQueue(this);
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject root = new JSONObject(response);
+                        int respuesta = (int) root.get("confirmacion");
+                        if (respuesta == 1) {
+                            agregarPagoDeAbono=!agregarPagoDeAbono;
+                            Toast.makeText(Cuenta.this, "Abono guardado Satisfactoriamente!", Toast.LENGTH_LONG).show();
+                            mostrarDetalleCuenta(codigoCredito);
+                        } else if (respuesta == 2) {
+                            LayoutInflater inflater = getLayoutInflater();
+                            View layout = inflater.inflate(R.layout.cuenta_pago_finalizado, null);
+                            Toast toast = new Toast(getApplicationContext());
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
+                            toast.show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
-            }
-        });
-        queue.add(stringRequest);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    agregarPagoDeAbono=!agregarPagoDeAbono;
+                    Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
+                }
+            });
+            queue.add(stringRequest);
+        } else {
+            Toast.makeText(Cuenta.this, "Operacion en curso espere por favor!", Toast.LENGTH_LONG).show();
+        }
+
     }
 
 
@@ -409,7 +426,8 @@ public class Cuenta extends AppCompatActivity {
 
     //valores para fragment agregar Cuenta
     EditText fecha, monto, interes, dias, cuota;
-
+    //agregar cuenta
+    boolean agregarCuent=true;
     private void agregarCuenta() {
         final Dialog agregarCuenta = new Dialog(Cuenta.this);
         agregarCuenta.setTitle("Agregar Credito");
@@ -425,8 +443,14 @@ public class Cuenta extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validar()) {
-                    agregarCuentaValidada();
-                    agregarCuenta.cancel();
+                    if(agregarCuent){
+                        agregarCuent=!agregarCuent;
+                        agregarCuentaValidada();
+                        agregarCuenta.cancel();
+                    }else{
+                        Toast.makeText(Cuenta.this, "Operacion en curso espere por favor!", Toast.LENGTH_LONG).show();
+                    }
+
                 }
             }
         });
@@ -451,6 +475,7 @@ public class Cuenta extends AppCompatActivity {
                     JSONObject root = new JSONObject(response);
                     int respuesta = (int) root.get("confirmacion");
                     if (respuesta == 1) {
+                        agregarCuent=!agregarCuent;
                         startActivity(new Intent(Cuenta.this, Cliente.class));
                         Toast.makeText(Cuenta.this, "Credito agregado Satisfactoriamente", Toast.LENGTH_LONG).show();
                     } else if (respuesta == 0) {
@@ -463,6 +488,7 @@ public class Cuenta extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                agregarCuent=!agregarCuent;
                 Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
             }
         });

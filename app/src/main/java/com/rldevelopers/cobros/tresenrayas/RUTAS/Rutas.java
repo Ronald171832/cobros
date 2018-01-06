@@ -5,11 +5,10 @@ package com.rldevelopers.cobros.tresenrayas.RUTAS;
  */
 
 public class Rutas {
-//LOCAL
-    /*public final static String IP = "http://192.168.0.41";
+    //LOCAL
+/*    public final static String IP = "http://192.168.0.105";
     public final static String PUERTO = ":8080";
-    public final static String CARPETA = "/cobros/public/";
-*/
+    public final static String CARPETA = "/cobros/public/";*/
     //SERVIDOR HOSTINGUER
     public final static String IP = "http://manueldeveloper.xyz";
     public final static String PUERTO = "";
@@ -53,6 +52,7 @@ public class Rutas {
     public final static String AGREGAR_CLIENTE = IP + PUERTO + CARPETA + "agregarCliente/";
     public final static String EDITAR_CLIENTE = IP + PUERTO + CARPETA + "clientes/actualizar/";
     public final static String CUENTAS_CLIENTE = IP + PUERTO + CARPETA + "clientes/mostrar/cuentas/";
+    public final static String CUENTAS_CLIENTE_TRABAJADOR = IP + PUERTO + CARPETA + "clientes/mostrar/cuentas/trabajador/";
     public final static String NO_PAGO_CLIENTE = IP + PUERTO + CARPETA + "observacion/nueva/";
 
     //CUENTAS

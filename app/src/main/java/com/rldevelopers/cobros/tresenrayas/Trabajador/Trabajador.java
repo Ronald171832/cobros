@@ -3,10 +3,15 @@ package com.rldevelopers.cobros.tresenrayas.Trabajador;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +51,29 @@ public class Trabajador extends AppCompatActivity {
     private TrabajadorListAdapter adapterTrabajdor;
     private ProgressDialog progress;
 
+    //filtro  de busqueda
+    private List<TrabajadorModel> listaTrabajadoresFiltro;
+    SearchView searchView;
+
+    private void getData(String query) {
+        List<TrabajadorModel> output = new ArrayList<>();
+        List<TrabajadorModel> filteredOutp = new ArrayList<>();
+        for (int i = 0; i < listaTrabajadores.size(); i++) {
+            output.add(listaTrabajadores.get(i));
+        }
+        if (searchView != null) {
+            for (TrabajadorModel model : output) {
+                if (model.getNombre().toLowerCase().startsWith(query.toLowerCase())) {
+                    filteredOutp.add(model);
+                }
+            }
+        } else {
+            filteredOutp = output;
+        }
+        adapterTrabajdor = new TrabajadorListAdapter(Trabajador.this, R.layout.trabajadores_card, filteredOutp);
+        lv.setAdapter(adapterTrabajdor);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +81,35 @@ public class Trabajador extends AppCompatActivity {
         init();
         cargarListView();
         tocarListView();
+        refrescarPantalla();
     }
+
+    private void refrescarPantalla() {
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipelayout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.refresh, R.color.refresh1, R.color.refresh2);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                        finish();
+                        startActivity(getIntent());
+
+                    }
+                }, 1000);
+            }
+        });
+
+    }
+
 
     private void tocarListView() {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(final AdapterView<?> adapterView, View view, final int pos, long l) {
+            public void onItemClick(final AdapterView<?> adapterView, final View view, final int pos, long l) {
                 final ArrayList<String> listItems = new ArrayList<>();
                 listItems.add("Ver Informes");
                 listItems.add("Ver Ubicacion");
@@ -76,23 +127,27 @@ public class Trabajador extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int item) {
+                                        View view1 = view;
+                                        TextView codigo = (TextView) view1.findViewById(R.id.cardTrabajador_codigo);
+                                        int posicion = retornarPosicion(codigo.getText().toString());
                                        /* //Toast.makeText(Cliente.this, pos + "  " + listaClientes.get(pos).getNombre(), Toast.LENGTH_LONG).show();
                                         Toast.makeText(Cliente.this, listItems.get(item), Toast.LENGTH_LONG).show();*/
                                         switch (item) {
                                             case 0:
-                                                verHistorico(pos);
+                                                //  System.out.println(codigo.getText().toString() + "**************************************************");
+                                                verHistorico(posicion);
                                                 break;
                                             case 1:
-                                                verUbicacion(pos);
+                                                verUbicacion(posicion);
                                                 break;
                                             case 2:
-                                                abonarDinero(pos);
+                                                abonarDinero(posicion);
                                                 break;
                                             case 3:
-                                                editarDatos(pos);
+                                                editarDatos(posicion);
                                                 break;
                                             case 4:
-                                                darDeAltaBaja(pos);
+                                                darDeAltaBaja(posicion);
                                                 break;
                                         }
                                     }
@@ -104,6 +159,16 @@ public class Trabajador extends AppCompatActivity {
                 // Toast.makeText(Trabajador.this, pos + "  " + listaTrabajadores.get(pos).getNombre(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+
+    private int retornarPosicion(String codigo) {
+        for (int i = 0; i < listaTrabajadores.size(); i++) {
+            if (codigo.equals(listaTrabajadores.get(i).getCodigo())) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private void darDeAltaBaja(int pos) {
@@ -190,6 +255,8 @@ public class Trabajador extends AppCompatActivity {
         editarDatosCliente.show();
     }
 
+    //pagar dinero
+    boolean abonarDinero = true;
 
     private void abonarDinero(final int pos) {
         final Dialog registrar_abono = new Dialog(Trabajador.this);
@@ -208,30 +275,37 @@ public class Trabajador extends AppCompatActivity {
                 }
                 String cod_tra = listaTrabajadores.get(pos).getCodigo();
                 String URL = Rutas.ABONAR_TRABAJADOR + mo + "/" + cod_tra;
-                RequestQueue queue = Volley.newRequestQueue(Trabajador.this);
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject root = new JSONObject(response);
-                            int respuesta = (int) root.get("confirmacion");
-                            if (respuesta == 1) {
-                                Toast.makeText(Trabajador.this, "Abono registrado Satisfactoriamente", Toast.LENGTH_LONG).show();
-                                registrar_abono.cancel();
-                            } else if (respuesta == 0) {
-                                Toast.makeText(Trabajador.this, "No abrio informe!", Toast.LENGTH_LONG).show();
+                if (abonarDinero) {
+                    abonarDinero = !abonarDinero;
+                    RequestQueue queue = Volley.newRequestQueue(Trabajador.this);
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject root = new JSONObject(response);
+                                int respuesta = (int) root.get("confirmacion");
+                                if (respuesta == 1) {
+                                    Toast.makeText(Trabajador.this, "Abono registrado Satisfactoriamente", Toast.LENGTH_LONG).show();
+                                    abonarDinero = !abonarDinero;
+                                    registrar_abono.cancel();
+                                } else if (respuesta == 0) {
+                                    Toast.makeText(Trabajador.this, "No abrio informe!", Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                queue.add(stringRequest);
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            abonarDinero = !abonarDinero;
+                            Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    queue.add(stringRequest);
+                } else {
+                    Toast.makeText(Trabajador.this, "Operacion en curso espere por favor!", Toast.LENGTH_LONG).show();
+                }
             }
         });
         int width = (int) (Trabajador.this.getResources().getDisplayMetrics().widthPixels);
@@ -302,12 +376,40 @@ public class Trabajador extends AppCompatActivity {
 
     }
 
+    private SearchManager searchManager;
+
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_trabajador, menu);
+        // MenuItem search = menu.findItem(R.id.search_trabajador);
+        MenuItem searchItem = (MenuItem) menu.findItem(R.id.search_trabajador);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+//        searchView.setQueryHint(getString(R.string.search));
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                getData(newText);
+                return false;
+            }
+        });
+
+
+    /*    searchView.setOnCloseListener((SearchView.OnCloseListener) this);
+        searchView.requestFocus();*/
+
+
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -325,6 +427,7 @@ public class Trabajador extends AppCompatActivity {
     EditText nombre;
     EditText celular;
     EditText contra;
+    boolean agregarTrabajado = true;
 
     private void agregarTrabajador() {
         final Dialog agregarTrabajador = new Dialog(Trabajador.this);
@@ -340,8 +443,13 @@ public class Trabajador extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validar()) {
-                    agregarTrabajadorValidado();
-                    agregarTrabajador.cancel();
+                    if (agregarTrabajado) {
+                        agregarTrabajado = !agregarTrabajado;
+                        agregarTrabajadorValidado();
+                        agregarTrabajador.cancel();
+                    } else {
+                        Toast.makeText(Trabajador.this, "Operacion en curso espere por favor!", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -372,6 +480,7 @@ public class Trabajador extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                agregarTrabajado = !agregarTrabajado;
                 Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
             }
         });
@@ -508,6 +617,7 @@ public class Trabajador extends AppCompatActivity {
         final TextView fecha = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_fecha);
         final TextView fechaFin = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_fecha_Fin);
         final TextView saldo = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_saldo);
+        final TextView porCobrar = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_por_cobrar);
         final TextView ingreso = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_ingreso);
         final TextView egreso = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_egreso);
         final TextView cargado = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_cargado);
@@ -528,12 +638,13 @@ public class Trabajador extends AppCompatActivity {
                     JSONObject root = new JSONObject(response);
                     CODIGO_INFORME = (String) root.get("codigo");
                     fecha.setText(Html.fromHtml("<b>Fecha Inicio: </b>" + (String) root.get("fecha")));
-                    String estado= (String) root.get("estado");
-                    if(estado.equals("1")){
+                    String estado = (String) root.get("estado");
+                    if (estado.equals("1")) {
                         fechaFin.setText(Html.fromHtml("<b>Fecha Cierre: </b>" + "Sin Fecha"));
-                    }else{
+                    } else {
                         fechaFin.setText(Html.fromHtml("<b>Fecha Cierre: </b>" + (String) root.get("fecha_cierre")));
                     }
+                    porCobrar.setText((String) root.get("porCobrar") + " Bs.");
                     egreso.setText(Html.fromHtml("<b>Egreso: </b>" + (String) root.get("egresos") + " Bs."));
                     ingreso.setText(Html.fromHtml("<b>Ingreso: </b>" + (String) root.get("ingresos") + " Bs."));
                     saldo.setText((String) root.get("saldo") + " Bs.");
@@ -608,7 +719,7 @@ public class Trabajador extends AppCompatActivity {
                             String detalle = (String) jsonArray.getJSONObject(i).get("detalle");
                             String descripcion = (String) jsonArray.getJSONObject(i).get("descripcion");
                             String nombre = (String) jsonArray.getJSONObject(i).get("nombre");
-                            movimientoModel = new MovimientoModel(fecha, monto, detalle, descripcion,nombre);
+                            movimientoModel = new MovimientoModel(fecha, monto, detalle, descripcion, nombre);
                         } catch (JSONException e) {
                             Log.e("Parser JSON", e.toString());
                         }

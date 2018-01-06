@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.rldevelopers.jps.togetherforever.Chat.Chat">
     <item
+        android:id="@+id/search_cliente"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+    <item
         android:id="@+id/item_mapa"
         android:icon="@drawable/mapa"
         android:title="MAPA"
