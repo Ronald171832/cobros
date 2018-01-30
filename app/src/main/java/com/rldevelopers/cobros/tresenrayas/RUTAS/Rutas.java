@@ -5,8 +5,8 @@ package com.rldevelopers.cobros.tresenrayas.RUTAS;
  */
 
 public class Rutas {
-    //LOCAL
-/*    public final static String IP = "http://192.168.0.105";
+/*    //LOCAL
+    public final static String IP = "http://192.168.0.33";
     public final static String PUERTO = ":8080";
     public final static String CARPETA = "/cobros/public/";*/
     //SERVIDOR HOSTINGUER

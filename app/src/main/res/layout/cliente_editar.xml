@@ -107,6 +107,13 @@
                     android:textSize="20dp" />
             </android.support.design.widget.TextInputLayout>
 
+            <fragment
+                android:visibility="gone"
+                android:id="@+id/mapEditarCliente"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
             <Button
                 android:id="@+id/bt_cliente_editar"
                 android:layout_width="match_parent"

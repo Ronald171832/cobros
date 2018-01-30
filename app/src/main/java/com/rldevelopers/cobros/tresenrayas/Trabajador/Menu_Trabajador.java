@@ -41,6 +41,7 @@ import com.rldevelopers.cobros.tresenrayas.Cliente.Cliente;
 import com.rldevelopers.cobros.tresenrayas.R;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.PasoDeParametros;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.Rutas;
+import com.rldevelopers.cobros.tresenrayas.Vistas.Menu_Principal;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -261,6 +262,7 @@ public class Menu_Trabajador extends AppCompatActivity {
         });
         cliente.setNeutralButton("Crear Cliente", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                PasoDeParametros.CODIGO_DE_TRABAJADOR = sharedPreferences.getString("codigo_trabajador", "");
                 startActivity(new Intent(Menu_Trabajador.this, AgregarCliente.class));
 
             }
@@ -512,7 +514,8 @@ public class Menu_Trabajador extends AppCompatActivity {
     }
 
     //registrar gasto
-    boolean registrarGasto=true;
+    boolean registrarGasto = true;
+
     private void registrarGasto() {
         final Dialog registrar_gasto = new Dialog(Menu_Trabajador.this);
         registrar_gasto.setTitle("Agregar Credito");
@@ -534,8 +537,8 @@ public class Menu_Trabajador extends AppCompatActivity {
                     descripcion.requestFocus();
                     return;
                 }
-                if(registrarGasto){
-                    registrarGasto=!registrarGasto;
+                if (registrarGasto) {
+                    registrarGasto = !registrarGasto;
                     String cod_tra = sharedPreferences.getString("codigo_trabajador", "");
                     String URL = Rutas.REGISTRAR_GASTO + mo + "/" + de + "/" + cod_tra;
                     RequestQueue queue = Volley.newRequestQueue(Menu_Trabajador.this);
@@ -547,7 +550,7 @@ public class Menu_Trabajador extends AppCompatActivity {
                                 int respuesta = (int) root.get("confirmacion");
                                 if (respuesta == 1) {
                                     Toast.makeText(Menu_Trabajador.this, "Gasto registrado Satisfactoriamente", Toast.LENGTH_LONG).show();
-                                    registrarGasto=!registrarGasto;
+                                    registrarGasto = !registrarGasto;
                                     registrar_gasto.cancel();
                                 } else if (respuesta == 0) {
                                     Toast.makeText(Menu_Trabajador.this, "No tiene dinero suficiente!", Toast.LENGTH_LONG).show();
@@ -559,12 +562,12 @@ public class Menu_Trabajador extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            registrarGasto=!registrarGasto;
+                            registrarGasto = !registrarGasto;
                             Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
                         }
                     });
                     queue.add(stringRequest);
-                }else{
+                } else {
                     Toast.makeText(Menu_Trabajador.this, "Operacion en curso espere por favor!", Toast.LENGTH_LONG).show();
                 }
 
@@ -584,7 +587,7 @@ public class Menu_Trabajador extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //TRABAJADOR
-        AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Trabajador.this);
+      /*  AlertDialog.Builder cliente = new AlertDialog.Builder(Menu_Trabajador.this);
         cliente.setTitle("Salir");
         cliente.setMessage("Elija una opcion:");
         cliente.setPositiveButton("SI", new DialogInterface.OnClickListener() {
@@ -597,8 +600,8 @@ public class Menu_Trabajador extends AppCompatActivity {
 //
             }
         });
-        cliente.show();
+        cliente.show();*/
         //SUPER USUARIO
-       //startActivity(new Intent(this, Menu_Principal.class));
+        startActivity(new Intent(this, Menu_Principal.class));
     }
 }

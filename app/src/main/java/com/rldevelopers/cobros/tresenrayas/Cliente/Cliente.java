@@ -34,6 +34,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.rldevelopers.cobros.tresenrayas.Cuenta.Cuenta;
 import com.rldevelopers.cobros.tresenrayas.R;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.PasoDeParametros;
@@ -48,7 +54,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cliente extends AppCompatActivity {
+public class Cliente extends AppCompatActivity implements OnMapReadyCallback {
     private List<ClienteModel> listaClientes;
     private ListView lv;
     private ClienteListAdapter adapter;
@@ -394,6 +400,7 @@ public class Cliente extends AppCompatActivity {
 
                 String URL = Rutas.EDITAR_CLIENTE + listaClientes.get(pos).getCodigo() + "/" + no + "/" + ce + "/" +
                         ca + "/" + di;
+                // TODO: 15/01/2018 hacer aqui lo la de laedicion del mapa
                 RequestQueue queue = Volley.newRequestQueue(Cliente.this);
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                     @Override
@@ -518,7 +525,6 @@ public class Cliente extends AppCompatActivity {
                     JSONArray jsonArray = root.getJSONArray("clientes");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         try {
-
                             String codigo = (int) jsonArray.getJSONObject(i).get("id") + "";
                             String nombre = (String) jsonArray.getJSONObject(i).get("nombre");
                             String celular = (int) jsonArray.getJSONObject(i).get("celular") + "";
@@ -551,6 +557,9 @@ public class Cliente extends AppCompatActivity {
     }
 
     private void init() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapEditarCliente);
+        //mapFragment.getMapAsync(Cliente.this);
         sharedPreferences = getSharedPreferences("colombianos", MODE_PRIVATE);
         listaClientes = new ArrayList<>();
         lv = (ListView) findViewById(R.id.lv_cliente);
@@ -563,5 +572,45 @@ public class Cliente extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(Cliente.this, Menu_Trabajador.class));
+    }
+
+
+    //EDITAR UBICACION DEL CLIENTE
+    LatLng ubicacion;
+    private GoogleMap mMap;
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions()
+                        .anchor(0.5f, 0.5f)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                        .position(latLng)
+                        .snippet("Sin Agregar")
+                        .title("Cliente Nuevo"));
+                ubicacion = latLng;
+                Toast.makeText(Cliente.this, ubicacion.latitude + " " + ubicacion.latitude, Toast.LENGTH_LONG).show();
+            }
+        });
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setRotateGesturesEnabled(true);
+        mMap.getUiSettings().setTiltGesturesEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
     }
 }

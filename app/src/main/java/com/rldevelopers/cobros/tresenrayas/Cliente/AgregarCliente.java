@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rldevelopers.cobros.tresenrayas.R;
+import com.rldevelopers.cobros.tresenrayas.RUTAS.PasoDeParametros;
 import com.rldevelopers.cobros.tresenrayas.RUTAS.Rutas;
 import com.rldevelopers.cobros.tresenrayas.Trabajador.Menu_Trabajador;
 
@@ -33,9 +34,10 @@ import org.json.JSONObject;
 
 public class AgregarCliente extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     LatLng ubicacion;
+    private GoogleMap mMap;
+
     EditText nombre, celular, carnet, direccion;
 
     @Override
@@ -85,7 +87,7 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
             String lo = ubicacion.longitude + "";
             String URL = Rutas.AGREGAR_CLIENTE + nombre.getText().toString().trim() +
                     "/" + celular.getText().toString().trim() + "/" + carnet.getText().toString().trim() +
-                    "/" + direccion.getText().toString().trim() + "/" + la + "/" + lo;
+                    "/" + direccion.getText().toString().trim() + "/" + la + "/" + lo + "/" + PasoDeParametros.CODIGO_DE_TRABAJADOR;
             RequestQueue queue = Volley.newRequestQueue(this);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                 @Override

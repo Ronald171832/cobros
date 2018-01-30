@@ -5,8 +5,10 @@ package com.rldevelopers.cobros.tresenrayas.RUTAS;
  */
 
 public class PasoDeParametros {
+
     public static String TIPO_DE_CLIENTE = "";
     public static String CODIGO_DE_CLIENTE = "";
+    public static String CODIGO_DE_TRABAJADOR = "";
     public static String VER_CUENTA_CLIENTE = "";
 
 }
