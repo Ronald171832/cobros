@@ -44,12 +44,12 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        String fe = calendario.get(position);
+        String fe = (position+1) + " " + calendario.get(position);
         holder.fecha.setText(fe);
-        if (fe.equals("")) {
+        if (fe.length()>2) {
             holder.layout.setText("❌");
-             //holder.layout.setBackgroundResource(R.drawable.add_cuenta);
-        }else {
+            //holder.layout.setBackgroundResource(R.drawable.add_cuenta);
+        } else {
             holder.layout.setText("✅");
         }
     }

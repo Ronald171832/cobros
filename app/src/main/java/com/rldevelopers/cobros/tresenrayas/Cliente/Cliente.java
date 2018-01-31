@@ -2,7 +2,6 @@ package com.rldevelopers.cobros.tresenrayas.Cliente;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,8 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -360,6 +357,19 @@ public class Cliente extends AppCompatActivity implements OnMapReadyCallback {
 
 
     private void editarDatos(final int pos) {
+
+        PasoDeParametros.CODIGO_DE_CLIENTE = listaClientes.get(pos).getCodigo();
+        PasoDeParametros.CLIENTE_EDITAR_CREAR = "editar";
+        PasoDeParametros.CLIENTE_NOMBRE =listaClientes.get(pos).getNombre();
+        PasoDeParametros.CLIENTE_CARNET =listaClientes.get(pos).getCarnet();
+        PasoDeParametros.CLIENTE_CELULAR =listaClientes.get(pos).getCelular();
+        PasoDeParametros.CLIENTE_DIRECCION =listaClientes.get(pos).getDireccion();
+        PasoDeParametros.CLIENTE_LATITUD =listaClientes.get(pos).getLatitud();
+        PasoDeParametros.CLIENTE_LONGITUD =listaClientes.get(pos).getLongitud();
+
+        startActivity(new Intent(this, AgregarCliente.class));
+
+        /*
         final Dialog editarDatosCliente = new Dialog(Cliente.this);
         editarDatosCliente.setTitle("Editar Datos");
         editarDatosCliente.setContentView(R.layout.cliente_editar);
@@ -428,7 +438,7 @@ public class Cliente extends AppCompatActivity implements OnMapReadyCallback {
         int width = (int) (Cliente.this.getResources().getDisplayMetrics().widthPixels);
         int height = (int) (Cliente.this.getResources().getDisplayMetrics().heightPixels * 0.9);
         editarDatosCliente.getWindow().setLayout(width, height);
-        editarDatosCliente.show();
+        editarDatosCliente.show();*/
     }
 
     private void verCuentas(int pos) {

@@ -36,7 +36,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 app:passwordToggleEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
@@ -51,46 +51,54 @@
                     android:textSize="20dp" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:passwordToggleEnabled="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_cliente_celular"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="3dp"
-                    android:hint="Celular:"
-                    android:inputType="number"
-                    android:maxLength="8"
-                    android:textSize="20dp" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
+                    app:passwordToggleEnabled="true">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:passwordToggleEnabled="true">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_cliente_celular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"
+                        android:hint="Celular:"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        android:textSize="20dp" />
+                </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_cliente_carnet"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="3dp"
-                    android:hint="Carnet:"
-                    android:inputType="textCapSentences"
-                    android:maxLength="15"
-                    android:textSize="20dp" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
+                    app:passwordToggleEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_cliente_carnet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"
+                        android:hint="Carnet:"
+                        android:inputType="textCapSentences"
+                        android:maxLength="15"
+                        android:textSize="20dp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 app:passwordToggleEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
@@ -106,20 +114,20 @@
             </android.support.design.widget.TextInputLayout>
 
             <fragment
-                android:id="@+id/mapCrerCliente"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_weight="1" />
+            android:id="@+id/mapCrerCliente"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_weight="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:layout_width="10dp"
-                    android:layout_height="30dp"
+                    android:layout_height="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/boton_rectangular"
                     android:onClick="cterreno"
@@ -129,17 +137,17 @@
 
                 <Button
                     android:layout_width="10dp"
-                    android:layout_height="30dp"
+                    android:layout_height="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/boton_rectangular"
                     android:onClick="chibrido"
                     android:text="HIBRIDO"
                     android:textColor="#ffffff"
-                    android:textSize="12dp" />
+                    android:textSize="11dp" />
 
                 <Button
                     android:layout_width="10dp"
-                    android:layout_height="30dp"
+                    android:layout_height="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/boton_rectangular"
                     android:onClick="cnormal"
@@ -149,18 +157,19 @@
 
                 <Button
                     android:layout_width="10dp"
-                    android:layout_height="30dp"
+                    android:layout_height="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/boton_rectangular"
                     android:onClick="csatelite"
                     android:text="SATELITE"
                     android:textColor="#ffffff"
-                    android:textSize="12dp" />
+                    android:textSize="11dp" />
 
             </LinearLayout>
 
 
             <Button
+                android:id="@+id/bt_cliente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

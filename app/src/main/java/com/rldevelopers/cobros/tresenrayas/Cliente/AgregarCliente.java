@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     LatLng ubicacion;
     private GoogleMap mMap;
-
+    Button boton;
     EditText nombre, celular, carnet, direccion;
 
     @Override
@@ -49,10 +50,20 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
                 .findFragmentById(R.id.mapCrerCliente);
         mapFragment.getMapAsync(this);
         init();
+        if (PasoDeParametros.CLIENTE_EDITAR_CREAR.equals("editar")) {
+            boton.setText("Guardar Cambios");
+            nombre.setText(PasoDeParametros.CLIENTE_NOMBRE);
+            carnet.setText(PasoDeParametros.CLIENTE_CARNET);
+            celular.setText(PasoDeParametros.CLIENTE_CELULAR);
+            direccion.setText(PasoDeParametros.CLIENTE_DIRECCION);
+        } else {
+            boton.setText("Agregar");
+        }
     }
 
     private void init() {
         nombre = (EditText) findViewById(R.id.et_cliente_nombre);
+        boton = (Button) findViewById(R.id.bt_cliente);
         celular = (EditText) findViewById(R.id.et_cliente_celular);
         carnet = (EditText) findViewById(R.id.et_cliente_carnet);
         direccion = (EditText) findViewById(R.id.et_cliente_direccion);
@@ -82,35 +93,43 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
             return;
         }
         if (agregarCliente) {
-            agregarCliente = !agregarCliente;
-            String la = ubicacion.latitude + "";
-            String lo = ubicacion.longitude + "";
-            String URL = Rutas.AGREGAR_CLIENTE + nombre.getText().toString().trim() +
-                    "/" + celular.getText().toString().trim() + "/" + carnet.getText().toString().trim() +
-                    "/" + direccion.getText().toString().trim() + "/" + la + "/" + lo + "/" + PasoDeParametros.CODIGO_DE_TRABAJADOR;
-            RequestQueue queue = Volley.newRequestQueue(this);
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject root = new JSONObject(response);
-                        int respuesta = (int) root.get("confirmacion");
-                        if (respuesta == 1) {
-                            startActivity(new Intent(AgregarCliente.this, Menu_Trabajador.class));
-                            Toast.makeText(AgregarCliente.this, "Cliente agregado Satisfactoriamente", Toast.LENGTH_LONG).show();
+            if (PasoDeParametros.CLIENTE_EDITAR_CREAR.equals("editar")) {
+
+
+
+
+            } else {
+                agregarCliente = !agregarCliente;
+                String la = ubicacion.latitude + "";
+                String lo = ubicacion.longitude + "";
+                String URL = Rutas.AGREGAR_CLIENTE + nombre.getText().toString().trim() +
+                        "/" + celular.getText().toString().trim() + "/" + carnet.getText().toString().trim() +
+                        "/" + direccion.getText().toString().trim() + "/" + la + "/" + lo + "/" + PasoDeParametros.CODIGO_DE_TRABAJADOR;
+                RequestQueue queue = Volley.newRequestQueue(this);
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject root = new JSONObject(response);
+                            int respuesta = (int) root.get("confirmacion");
+                            if (respuesta == 1) {
+                                startActivity(new Intent(AgregarCliente.this, Menu_Trabajador.class));
+                                Toast.makeText(AgregarCliente.this, "Cliente agregado Satisfactoriamente", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    agregarCliente = !agregarCliente;
-                    Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
-                }
-            });
-            queue.add(stringRequest);
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        agregarCliente = !agregarCliente;
+                        Toast.makeText(getApplicationContext(), "Compruebe su conexion a Internet!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                queue.add(stringRequest);
+            }
+
         } else {
             Toast.makeText(AgregarCliente.this, "Operacion en curso espere por favor!", Toast.LENGTH_LONG).show();
         }
@@ -164,22 +183,46 @@ public class AgregarCliente extends FragmentActivity implements OnMapReadyCallba
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LatLng miUbicacionActual = new LatLng(-17.797010101762, -63.2004534171);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miUbicacionActual, 14));
-        //   mMap.addMarker(new MarkerOptions().position(miUbicacionActual).title("Ubicacion Actual"));
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions()
-                        .anchor(0.5f, 0.5f)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
-                        .position(latLng)
-                        .snippet("Sin Agregar")
-                        .title("Cliente Nuevo"));
-                ubicacion = latLng;
-            }
-        });
+        LatLng miUbicacionActual;
+        if (PasoDeParametros.CLIENTE_EDITAR_CREAR.equals("editar")) {
+            double la = Double.parseDouble(PasoDeParametros.CLIENTE_LATITUD);
+            double lo = Double.parseDouble(PasoDeParametros.CLIENTE_LONGITUD);
+            miUbicacionActual = new LatLng(la, lo);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miUbicacionActual, 14));
+            //   mMap.addMarker(new MarkerOptions().position(miUbicacionActual).title("Ubicacion Actual"));
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions()
+                            .anchor(0.5f, 0.5f)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                            .position(latLng)
+                            .snippet("Cliente Edicion")
+                            .title(PasoDeParametros.CLIENTE_NOMBRE));
+                    ubicacion = latLng;
+                }
+            });
+
+        } else {
+            miUbicacionActual = new LatLng(-17.797010101762, -63.2004534171);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miUbicacionActual, 14));
+            //   mMap.addMarker(new MarkerOptions().position(miUbicacionActual).title("Ubicacion Actual"));
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions()
+                            .anchor(0.5f, 0.5f)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                            .position(latLng)
+                            .snippet("Sin Agregar")
+                            .title("Cliente Nuevo"));
+                    ubicacion = latLng;
+                }
+            });
+        }
+
 
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);

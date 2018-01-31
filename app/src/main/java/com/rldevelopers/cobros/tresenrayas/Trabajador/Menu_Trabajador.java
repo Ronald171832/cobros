@@ -386,6 +386,7 @@ public class Menu_Trabajador extends AppCompatActivity {
         final TextView cargado = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_cargado);
         final TextView prestado = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_prestado);
         final TextView cobrado = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_cobrado);
+        final TextView cobrado_al_dia = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_cobrado_al_dia);
         final TextView gastado = (TextView) verInforme.findViewById(R.id.tv_informe_trabajador_gastos);
         final Button b_egreso = (Button) verInforme.findViewById(R.id.bt_informe_trabajador_egreso);
         final Button b_ingreso = (Button) verInforme.findViewById(R.id.bt_informe_trabajador_ingreso);
@@ -415,6 +416,7 @@ public class Menu_Trabajador extends AppCompatActivity {
                     prestado.setText(Html.fromHtml("<b>Prestado: </b>" + (String) root.get("prestado") + " Bs."));
                     gastado.setText(Html.fromHtml("<b>Gastado: </b>" + (String) root.get("gastado") + " Bs."));
                     cobrado.setText(Html.fromHtml("<b>Cobrado: </b>" + (String) root.get("cobrado") + " Bs."));
+                    cobrado_al_dia.setText(Html.fromHtml("<b>Cobrado al Día: </b>" + (String) root.get("cobradoDia") + " Bs."));
                 } catch (JSONException e) {
                     verInforme.cancel();
                     Toast.makeText(getApplicationContext(), "No hay Informe en curso!", Toast.LENGTH_LONG).show();
